@@ -17,12 +17,12 @@ class MTAL_Admin {
 	public static function init() {
 		add_action( 'admin_menu', array( __CLASS__, 'add_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
-		add_action( 'admin_post_ail_save_settings', array( __CLASS__, 'handle_save_settings' ) );
-		add_action( 'admin_post_ail_save_keyword', array( __CLASS__, 'handle_save_keyword' ) );
-		add_action( 'admin_post_ail_delete_keyword', array( __CLASS__, 'handle_delete_keyword' ) );
-		add_action( 'admin_post_ail_export', array( __CLASS__, 'handle_export' ) );
-		add_action( 'admin_post_ail_import', array( __CLASS__, 'handle_import' ) );
-		add_action( 'wp_ajax_ail_search', array( __CLASS__, 'ajax_search' ) );
+		add_action( 'admin_post_mtal_save_settings', array( __CLASS__, 'handle_save_settings' ) );
+		add_action( 'admin_post_mtal_save_keyword', array( __CLASS__, 'handle_save_keyword' ) );
+		add_action( 'admin_post_mtal_delete_keyword', array( __CLASS__, 'handle_delete_keyword' ) );
+		add_action( 'admin_post_mtal_export', array( __CLASS__, 'handle_export' ) );
+		add_action( 'admin_post_mtal_import', array( __CLASS__, 'handle_import' ) );
+		add_action( 'wp_ajax_mtal_search', array( __CLASS__, 'ajax_search' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( MTAL_PLUGIN_FILE ), array( __CLASS__, 'action_links' ) );
 		add_filter( 'plugin_row_meta', array( __CLASS__, 'row_meta' ), 10, 2 );
 	}
@@ -232,7 +232,7 @@ class MTAL_Admin {
 		$json = wp_json_encode( $export, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
 		nocache_headers();
 		header( 'Content-Type: application/json; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename="ail-export-' . gmdate( 'Y-m-d-His' ) . '.json"' );
+		header( 'Content-Disposition: attachment; filename="autolink-export-' . gmdate( 'Y-m-d-His' ) . '.json"' );
 		header( 'Content-Length: ' . strlen( $json ) );
 		echo $json; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON download.
 		exit;

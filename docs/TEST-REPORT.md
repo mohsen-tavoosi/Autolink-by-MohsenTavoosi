@@ -24,3 +24,11 @@
 - Engine vectors 78/78, page processing 12/12, settings screen checks all PASS, migration unit test 7/7 (old table renamed with rows, options copied, filled new table never overwritten, fresh install changes nothing).
 - phpcs with WordPress-Extra and the prefix rule `mtal`: 0 errors, 0 warnings.
 - Not run: real WordPress with MySQL (the table rename was tested with a stand-in), Elementor, page cache plugins, Plugin Check plugin.
+
+
+## 2 Nov 2026, real WordPress and Plugin Check
+
+- Official Plugin Check plugin (WordPress 7.1 with SQLite): 0 errors after fixing the direct-access guard in two include files. 62 warnings remain, all for direct queries on the plugin's own table `{prefix}mtal_keywords` with prepared values. They are false positives.
+- Found and fixed with a real WordPress run: after the prefix change the admin form handlers and the title search AJAX were still registered under the old `ail_` names, so the forms would not have reached them. New static test `tests/action-names.php` (25 checks) compares every form action, script action, hook and nonce. It fails on the old code (17 failures) and passes now.
+- Real WordPress checks that passed: all 6 hooks registered, a record saved through admin-post with nonce (row stored, redirect `kw_saved`), a front-end page request shows the links with no leftover markers (0 `ail-s:` in the source), front page returns HTTP 200.
+- Still not run: MySQL (table rename), Elementor, WooCommerce, page cache plugins.

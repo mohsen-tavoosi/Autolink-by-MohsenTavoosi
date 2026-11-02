@@ -9,7 +9,7 @@
 - New: `mtal_unlock_capped` (off): a long phrase at its limit frees its spot.
 - New: `mtal_short_inside` (off): a short phrase with no link yet on the page links once inside a long phrase without a link.
 - New: whole-page processing. Fragments are marked, one output buffer processes all fragments of a post or term together. Filter `mtal_whole_page` returns false to go back to per-fragment processing.
-- New: `mtal_front_page` switch, `mtal_exclude_posts` and `mtal_exclude_terms` with AJAX title search (`wp_ajax_ail_search`).
+- New: `mtal_front_page` switch, `mtal_exclude_posts` and `mtal_exclude_terms` with AJAX title search (`wp_ajax_mtal_search`).
 - New: record "only on these pages" uses the same search picker (stored as before, comma list of IDs).
 - Change: plugin vector R07-03 updated for smart diversity.
 - Fix: entity-encoded `&amp;` in a stored target URL was escaped twice (shared vector R21-02).
