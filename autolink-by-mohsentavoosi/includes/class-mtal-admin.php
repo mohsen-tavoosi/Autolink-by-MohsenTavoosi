@@ -132,9 +132,9 @@ class MTAL_Admin {
 
 		// R03: one URL, one record.
 		if ( $id ) {
-			$dup = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table} WHERE target_url = %s AND id != %d LIMIT 1", $target_url, $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$dup = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table} WHERE target_url = %s AND id != %d LIMIT 1", $target_url, $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table of this plugin, table name built from $wpdb->prefix, values prepared.
 		} else {
-			$dup = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table} WHERE target_url = %s LIMIT 1", $target_url ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$dup = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table} WHERE target_url = %s LIMIT 1", $target_url ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table of this plugin, table name built from $wpdb->prefix, values prepared.
 		}
 		if ( $dup ) {
 			self::redirect( 'dup_url' );
@@ -166,9 +166,9 @@ class MTAL_Admin {
 		$format = array( '%s', '%s', '%d', '%d', '%s', '%s' );
 
 		if ( $id ) {
-			$wpdb->update( $table, $data, array( 'id' => $id ), $format, array( '%d' ) );
+			$wpdb->update( $table, $data, array( 'id' => $id ), $format, array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table of this plugin, table name built from $wpdb->prefix, values prepared.
 		} else {
-			$wpdb->insert( $table, $data, $format );
+			$wpdb->insert( $table, $data, $format ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table of this plugin, table name built from $wpdb->prefix, values prepared.
 		}
 
 		MTAL_Hooks::reset();
@@ -184,7 +184,7 @@ class MTAL_Admin {
 		global $wpdb;
 		$id = isset( $_POST['kw_id'] ) ? absint( $_POST['kw_id'] ) : 0;
 		if ( $id ) {
-			$wpdb->delete( $wpdb->prefix . 'mtal_keywords', array( 'id' => $id ), array( '%d' ) );
+			$wpdb->delete( $wpdb->prefix . 'mtal_keywords', array( 'id' => $id ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table of this plugin, table name built from $wpdb->prefix, values prepared.
 			MTAL_Hooks::reset();
 		}
 		self::redirect( 'kw_deleted' );
@@ -199,7 +199,7 @@ class MTAL_Admin {
 		check_admin_referer( 'mtal_export' );
 
 		global $wpdb;
-		$rows = $wpdb->get_results( "SELECT keywords, target_url, max_links, para_max, para_mode, post_ids FROM {$wpdb->prefix}mtal_keywords ORDER BY id ASC", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$rows = $wpdb->get_results( "SELECT keywords, target_url, max_links, para_max, para_mode, post_ids FROM {$wpdb->prefix}mtal_keywords ORDER BY id ASC", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table of this plugin, table name built from $wpdb->prefix, values prepared.
 		$rows = is_array( $rows ) ? $rows : array();
 
 		foreach ( $rows as &$row ) {
@@ -275,7 +275,7 @@ class MTAL_Admin {
 		if ( 'merge' === $mode ) {
 			global $wpdb;
 			$table = $wpdb->prefix . 'mtal_keywords';
-			foreach ( (array) $wpdb->get_col( "SELECT target_url FROM {$table}" ) as $u ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			foreach ( (array) $wpdb->get_col( "SELECT target_url FROM {$table}" ) as $u ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table of this plugin, table name built from $wpdb->prefix, values prepared.
 				$seen_url[ $u ] = true;
 			}
 			$seen_kw = self::keyword_owners( $zwnj, 0 );
@@ -336,11 +336,11 @@ class MTAL_Admin {
 		global $wpdb;
 		$table = $wpdb->prefix . 'mtal_keywords';
 		if ( 'replace' === $mode ) {
-			$wpdb->query( "DELETE FROM {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "DELETE FROM {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table of this plugin, table name built from $wpdb->prefix, values prepared.
 		}
 		$imported = 0;
 		foreach ( $clean as $row ) {
-			if ( $wpdb->insert( $table, $row, array( '%s', '%s', '%d', '%d', '%s', '%s' ) ) ) {
+			if ( $wpdb->insert( $table, $row, array( '%s', '%s', '%d', '%d', '%s', '%s' ) ) ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table of this plugin, table name built from $wpdb->prefix, values prepared.
 				++$imported;
 			}
 		}
@@ -403,7 +403,7 @@ class MTAL_Admin {
 
 	private static function get_records() {
 		global $wpdb;
-		$rows = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mtal_keywords ORDER BY id ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$rows = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mtal_keywords ORDER BY id ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table of this plugin, table name built from $wpdb->prefix, values prepared.
 		return $rows ? $rows : array();
 	}
 

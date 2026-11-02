@@ -4,7 +4,7 @@ Tags: internal links, seo, automatic links, keywords, elementor
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,10 @@ Your records are kept unless you ticked "Delete all plugin data when the plugin 
 
 == Changelog ==
 
+= 2.2.1 =
+* Fix: Save, Delete, Import, Export and the title search in the settings screen used internal names from before the rename. They now work.
+* Dev: database queries on the plugin's own table are marked for Plugin Check. No change in behavior.
+
 = 2.2.0 =
 * Rename: the plugin is now Autolink by MohsenTavoosi. Your records and settings move to the new internal names automatically on the first load. Export a backup before updating.
 * New: a longer keyword always keeps its place, even after it reached its limit. A shorter keyword is never linked inside it.
@@ -93,6 +97,9 @@ Your records are kept unless you ticked "Delete all plugin data when the plugin 
 * Multiple keywords per record, paragraph limits, Import and Export.
 
 == Upgrade Notice ==
+
+= 2.2.1 =
+Fixes Save, Delete, Import, Export and search in the settings screen. Update recommended.
 
 = 2.2.0 =
 Export a backup first. Smart link diversity is on by default and can change which keyword of a record gets the link. Clear your page cache after the update.

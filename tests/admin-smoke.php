@@ -1,7 +1,7 @@
 <?php
 // Usage: php tests/admin-smoke.php
 // Renders the settings screen and runs the search endpoint with small WordPress stand-ins, to catch PHP errors.
-define( 'ABSPATH', __DIR__ . '/' ); define( 'ARRAY_A', 'ARRAY_A' ); define( 'MTAL_VERSION', '2.2.0' ); define( 'MTAL_PLUGIN_URL', '/' ); define( 'MTAL_PLUGIN_FILE', __FILE__ );
+define( 'ABSPATH', __DIR__ . '/' ); define( 'ARRAY_A', 'ARRAY_A' ); define( 'MTAL_VERSION', '2.2.1' ); define( 'MTAL_PLUGIN_URL', '/' ); define( 'MTAL_PLUGIN_FILE', __FILE__ );
 define( 'MTAL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/automate-internal-links' ); define( 'MTAL_DOCS_WP_URL', 'https://mohsentavoosi.com/wordpress-auto-internal-links' ); define( 'MTAL_AUTHOR_URL', 'https://mohsentavoosi.com' );
 define( 'MTAL_DIVERSITY_INFO_URL', MTAL_DOCS_GENERAL_URL );
 error_reporting( E_ALL ); set_error_handler( function ( $n, $s, $f, $l ) { echo "PHPERR [$n] $s at $l\n"; return true; } );

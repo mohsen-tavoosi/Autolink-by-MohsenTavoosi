@@ -344,7 +344,7 @@ class MTAL_Hooks {
 		if ( null === self::$prepared ) {
 			global $wpdb;
 			$table          = $wpdb->prefix . 'mtal_keywords';
-			$rows           = $wpdb->get_results( "SELECT id, keywords, target_url, max_links, para_max, para_mode, post_ids FROM {$table} ORDER BY id ASC", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name only.
+			$rows           = $wpdb->get_results( "SELECT id, keywords, target_url, max_links, para_max, para_mode, post_ids FROM {$table} ORDER BY id ASC", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name only.
 			self::$prepared = MTAL_Processor::prepare( is_array( $rows ) ? $rows : array(), MTAL_Settings::zwnj_as_space() );
 		}
 		return self::$prepared;

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.1
+- Fix: the admin_post and AJAX hooks for save, delete, import, export and title search were still registered under the old `ail_` names after the prefix change, so those buttons did nothing. They are now `mtal_`. A new test (`tests/action-names.php`) compares form actions, hooks, JavaScript and nonces and runs in CI.
+- Dev: Plugin Check findings on the plugin's own table are marked with a reason. No change in behavior.
+- Dev: export file name is `autolink-export-<date>.json`.
+
 ## 2.2.0
 - Rename: the plugin is now "Autolink by MohsenTavoosi" (previously "Auto Internal Links"). Slug, folder and text domain are `autolink-by-mohsentavoosi`.
 - Change: the code prefix is now `mtal_` / `MTAL_` (was `ail_`), the table is `{prefix}mtal_keywords`. On the first load the old table is renamed and the old options are copied, then removed. Import still accepts files exported under the old name and prefix.
