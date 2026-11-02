@@ -5,6 +5,9 @@
 // page_fragments/expected_fragments (processed together as one page), posts (archive: one state per post).
 // ctx.opts sets diversity, unlock_capped, short_inside (defaults: true, false, false).
 define( 'MTAL_TESTING', true );
+if ( ! defined( 'ABSPATH' ) ) {
+	define( 'ABSPATH', __DIR__ . '/' );
+}
 function esc_url_raw( $u, $p = null ) { return $u; }
 require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-processor.php';
 

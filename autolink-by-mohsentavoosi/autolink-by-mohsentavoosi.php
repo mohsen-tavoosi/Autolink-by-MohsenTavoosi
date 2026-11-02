@@ -181,8 +181,6 @@ function mtal_deactivate() {
  */
 add_action( 'plugins_loaded', 'mtal_boot' );
 function mtal_boot() {
-	load_plugin_textdomain( 'autolink-by-mohsentavoosi', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-
 	if ( (int) get_option( 'mtal_schema_version', 0 ) < MTAL_SCHEMA_VERSION ) {
 		mtal_migrate_legacy_prefix(); // Before the table is created, so the old rows move first.
 		$ready = mtal_create_table();

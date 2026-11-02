@@ -9,7 +9,7 @@
  * @package Autolink_By_MohsenTavoosi
  */
 
-if ( ! defined( 'ABSPATH' ) && ! defined( 'MTAL_TESTING' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 

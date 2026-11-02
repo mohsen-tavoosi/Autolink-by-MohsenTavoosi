@@ -19,7 +19,7 @@
 
 // phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
-if ( ! defined( 'ABSPATH' ) && ! defined( 'MTAL_TESTING' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 

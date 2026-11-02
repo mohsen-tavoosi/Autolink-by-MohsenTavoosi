@@ -617,7 +617,7 @@ class MTAL_Admin {
 			$edit_pmax = (int) $edit_rec->para_max;
 			$edit_mode = ( 'heading' === $edit_rec->para_mode ) ? 'heading' : 'p_br';
 		}
-		$dup_kw    = isset( $_GET['dup_kw'] ) ? sanitize_text_field( rawurldecode( wp_unslash( $_GET['dup_kw'] ) ) ) : '';
+		$dup_kw    = isset( $_GET['dup_kw'] ) ? sanitize_text_field( wp_unslash( $_GET['dup_kw'] ) ) : '';
 		$dup_rec   = isset( $_GET['dup_rec'] ) ? absint( $_GET['dup_rec'] ) : 0;
 		$imp_count = isset( $_GET['import_count'] ) ? absint( $_GET['import_count'] ) : 0;
 		$sk_inv    = isset( $_GET['sk_invalid'] ) ? absint( $_GET['sk_invalid'] ) : 0;
