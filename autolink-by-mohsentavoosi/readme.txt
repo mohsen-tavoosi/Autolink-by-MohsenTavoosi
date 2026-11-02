@@ -1,5 +1,5 @@
 === Autolink by MohsenTavoosi ===
-Contributors: your-wordpress-org-username
+Contributors: mohsentavoosiseo
 Tags: internal links, seo, automatic links, keywords, elementor
 Requires at least: 5.8
 Tested up to: 7.1
