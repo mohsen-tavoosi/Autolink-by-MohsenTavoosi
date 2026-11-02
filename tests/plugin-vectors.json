@@ -1,0 +1,541 @@
+{
+ "about": "Plugin-specific vectors for Autolink by MohsenTavoosi 2.1.0 (ZWNJ switch, R21, R24 and engine details).",
+ "cases": [
+  {
+   "id": "ZW-ON-01",
+   "rule": "switch ON: keyword with space also matches half-space text",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/door/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>درب‌اتوماتیک و درب اتوماتیک</p>",
+   "expected_html": "<p><a href=\"https://site.test/door/\">درب‌اتوماتیک</a> و <a href=\"https://site.test/door/\">درب اتوماتیک</a></p>"
+  },
+  {
+   "id": "ZW-ON-02",
+   "rule": "switch ON: keyword typed with half-space also matches space text",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "درب‌اتوماتیک"
+     ],
+     "target_url": "https://site.test/door/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>درب اتوماتیک و درب‌اتوماتیک</p>",
+   "expected_html": "<p><a href=\"https://site.test/door/\">درب اتوماتیک</a> و <a href=\"https://site.test/door/\">درب‌اتوماتیک</a></p>"
+  },
+  {
+   "id": "ZW-ON-03",
+   "rule": "switch ON: mixed space and half-space run",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/door/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>درب ‌اتوماتیک</p>",
+   "expected_html": "<p><a href=\"https://site.test/door/\">درب ‌اتوماتیک</a></p>"
+  },
+  {
+   "id": "ZW-OFF-01",
+   "rule": "switch OFF: half-space text does not match a spaced keyword, space text does",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/door/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>درب‌اتوماتیک و درب اتوماتیک</p>",
+   "expected_html": "<p>درب‌اتوماتیک و <a href=\"https://site.test/door/\">درب اتوماتیک</a></p>",
+   "ctx": {
+    "zwnj_as_space": false
+   }
+  },
+  {
+   "id": "ZW-OFF-02",
+   "rule": "switch OFF: keyword typed with half-space matches only half-space text",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "درب‌اتوماتیک"
+     ],
+     "target_url": "https://site.test/door/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>درب اتوماتیک و درب‌اتوماتیک</p>",
+   "expected_html": "<p>درب اتوماتیک و <a href=\"https://site.test/door/\">درب‌اتوماتیک</a></p>",
+   "ctx": {
+    "zwnj_as_space": false
+   }
+  },
+  {
+   "id": "ZW-ON-04",
+   "rule": "switch ON: half-space still protects word edges (R05), single word inside a joined word is not linked",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "کتاب"
+     ],
+     "target_url": "https://site.test/door/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>کتاب‌ها و می‌کتاب</p>",
+   "expected_html": "<p>کتاب‌ها و می‌کتاب</p>"
+  },
+  {
+   "id": "ZW-ON-05",
+   "rule": "switch ON: anchor with half-space text and wrong URL is unwrapped and relinked (R11 case 2)",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/door/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p><a href=\"https://other.test/x\">درب‌اتوماتیک</a></p>",
+   "expected_html": "<p><a href=\"https://site.test/door/\">درب‌اتوماتیک</a></p>"
+  },
+  {
+   "id": "ZW-ON-06",
+   "rule": "switch ON: anchor with half-space text and right URL is kept and counted (R11 case 1)",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/door/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p><a href=\"https://site.test/door/\">درب‌اتوماتیک</a> و درب اتوماتیک</p>",
+   "expected_html": "<p><a href=\"https://site.test/door/\">درب‌اتوماتیک</a> و درب اتوماتیک</p>"
+  },
+  {
+   "id": "R24-01",
+   "rule": "R24 same length keywords overlap: lower record id wins",
+   "records": [
+    {
+     "id": 2,
+     "keywords": [
+      "bar baz"
+     ],
+     "target_url": "https://site.test/two/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    },
+    {
+     "id": 1,
+     "keywords": [
+      "foo bar"
+     ],
+     "target_url": "https://site.test/one/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>foo bar baz</p>",
+   "expected_html": "<p><a href=\"https://site.test/one/\">foo bar</a> baz</p>"
+  },
+  {
+   "id": "R07-02",
+   "rule": "R07 longest keyword wins even across paragraph modes",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "https://site.test/dscr/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    },
+    {
+     "id": 2,
+     "keywords": [
+      "dscr loan"
+     ],
+     "target_url": "https://site.test/dscr-loan/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "heading",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>a dscr loan</p>",
+   "expected_html": "<p>a <a href=\"https://site.test/dscr-loan/\">dscr loan</a></p>"
+  },
+  {
+   "id": "R07-03",
+   "rule": "R07 + smart diversity (2.2.0): inside one record keyword 1 gets the first link; the longer phrase keeps its spot locked",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr",
+      "dscr loan"
+     ],
+     "target_url": "https://site.test/dscr/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>dscr and dscr loan</p>",
+   "expected_html": "<p><a href=\"https://site.test/dscr/\">dscr</a> and dscr loan</p>"
+  },
+  {
+   "id": "R21-01",
+   "rule": "R21 javascript: URL is never linked",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "javascript:alert(1)",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>dscr</p>",
+   "expected_html": "<p>dscr</p>"
+  },
+  {
+   "id": "R21-02",
+   "rule": "R21 protocol relative URL is never linked",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "//evil.test/x",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>dscr</p>",
+   "expected_html": "<p>dscr</p>"
+  },
+  {
+   "id": "R21-03",
+   "rule": "R21 relative URL is allowed",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "/dscr-loan",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>dscr</p>",
+   "expected_html": "<p><a href=\"/dscr-loan\">dscr</a></p>"
+  },
+  {
+   "id": "R21-04",
+   "rule": "R21 data: URL is never linked",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "data:text/html,x",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>dscr</p>",
+   "expected_html": "<p>dscr</p>"
+  },
+  {
+   "id": "R21-05",
+   "rule": "URL with ampersand is escaped once",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "https://site.test/p?a=1&b=2",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>dscr</p>",
+   "expected_html": "<p><a href=\"https://site.test/p?a=1&amp;b=2\">dscr</a></p>"
+  },
+  {
+   "id": "R12-02",
+   "rule": "R12 relative target equals current page",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "/dscr-loan/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>dscr</p>",
+   "expected_html": "<p>dscr</p>",
+   "ctx": {
+    "current_url": "https://site.test/dscr-loan/"
+   }
+  },
+  {
+   "id": "R12-03",
+   "rule": "R12 percent-encoded permalink equals decoded target",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "درب"
+     ],
+     "target_url": "https://site.test/درب-اتوماتیک/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>درب</p>",
+   "expected_html": "<p>درب</p>",
+   "ctx": {
+    "current_url": "https://site.test/%D8%AF%D8%B1%D8%A8-%D8%A7%D8%AA%D9%88%D9%85%D8%A7%D8%AA%DB%8C%DA%A9/"
+   }
+  },
+  {
+   "id": "R11-04",
+   "rule": "anchor without href is untouched",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "https://site.test/dscr/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p><a name=\"x\">dscr</a> dscr</p>",
+   "expected_html": "<p><a name=\"x\">dscr</a> <a href=\"https://site.test/dscr/\">dscr</a></p>"
+  },
+  {
+   "id": "R11-05",
+   "rule": "mailto and in-page anchors are untouched",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "https://site.test/dscr/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p><a href=\"#top\">dscr</a> <a href=\"mailto:a@b.c\">dscr</a></p>",
+   "expected_html": "<p><a href=\"#top\">dscr</a> <a href=\"mailto:a@b.c\">dscr</a></p>"
+  },
+  {
+   "id": "R14-03",
+   "rule": "button and svg text are never linked",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "https://site.test/dscr/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<button>dscr</button><svg><text>dscr</text></svg><p>dscr</p>",
+   "expected_html": "<button>dscr</button><svg><text>dscr</text></svg><p><a href=\"https://site.test/dscr/\">dscr</a></p>"
+  },
+  {
+   "id": "R20-03",
+   "rule": "keyword stored as entity R&amp;D still matches",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "R&amp;D"
+     ],
+     "target_url": "https://site.test/rd/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<p>Our R&amp;D team</p>",
+   "expected_html": "<p>Our <a href=\"https://site.test/rd/\">R&amp;D</a> team</p>"
+  },
+  {
+   "id": "R20-04",
+   "rule": "script keeps a raw nbsp character, only text gets the entity",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr loan"
+     ],
+     "target_url": "https://site.test/l/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<script>var a='x y';</script><p>dscr loan</p>",
+   "expected_html": "<script>var a='x y';</script><p><a href=\"https://site.test/l/\">dscr&nbsp;loan</a></p>"
+  },
+  {
+   "id": "NOOP-01",
+   "rule": "no keyword on the page: exact input is returned (no DOM round trip)",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "https://site.test/dscr/",
+     "max_links": 5,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "html": "<div class=\"x\"><br/><img src=\"a.png\"/>hello &copy; world</div>",
+   "expected_html": "<div class=\"x\"><br/><img src=\"a.png\"/>hello &copy; world</div>"
+  },
+  {
+   "id": "R10-02",
+   "rule": "heading mode rule does not link text inside the heading",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "https://site.test/dscr/",
+     "max_links": 9,
+     "para_max": 1,
+     "para_mode": "heading",
+     "post_ids": []
+    }
+   ],
+   "html": "<h2>dscr</h2><p>dscr</p>",
+   "expected_html": "<h2>dscr</h2><p><a href=\"https://site.test/dscr/\">dscr</a></p>"
+  },
+  {
+   "id": "R15-02",
+   "rule": "R15 two different posts have separate counters",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "dscr"
+     ],
+     "target_url": "https://site.test/dscr/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "fragments": [
+    "<p>dscr one</p>",
+    "<p>dscr two</p>"
+   ],
+   "expected_fragments": [
+    "<p><a href=\"https://site.test/dscr/\">dscr</a> one</p>",
+    "<p><a href=\"https://site.test/dscr/\">dscr</a> two</p>"
+   ],
+   "new_state_per_fragment": true
+  }
+ ]
+}

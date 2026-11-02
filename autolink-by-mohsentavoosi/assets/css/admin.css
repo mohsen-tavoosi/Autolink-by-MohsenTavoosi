@@ -1,0 +1,17 @@
+/* Autolink by MohsenTavoosi - Admin CSS */
+.ail-wrap .ail-card { background: #fff; border: 1px solid #dcdcde; border-radius: 6px; padding: 16px 20px; margin: 16px 0; max-width: 1100px; }
+.ail-wrap .ail-card h2 { margin-top: 0; }
+.ail-wrap .ail-form-box { background: #f6f7f7; border: 1px solid #dcdcde; border-radius: 6px; padding: 12px 16px; }
+.ail-wrap .form-table td .description { max-width: 720px; }
+.ail-info { text-decoration: none; font-size: 16px; margin-left: 6px; vertical-align: middle; }
+.ail-picker { position: relative; max-width: 560px; }
+.ail-picker-results { position: absolute; z-index: 20; left: 0; right: 0; margin: 2px 0 0; padding: 0; list-style: none; background: #fff; border: 1px solid #c3c4c7; border-radius: 4px; max-height: 260px; overflow: auto; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+.ail-picker-results li { margin: 0; padding: 7px 10px; cursor: pointer; }
+.ail-picker-results li:hover, .ail-picker-results li:focus { background: #f0f6fc; outline: none; }
+.ail-picker-results li.ail-none { cursor: default; color: #787c82; }
+.ail-picker-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; padding: 0; list-style: none; }
+.ail-chip { display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 3px 4px 3px 10px; background: #f0f6fc; border: 1px solid #c5d9ed; border-radius: 14px; font-size: 12px; }
+.ail-chip-x { border: 0; background: transparent; cursor: pointer; font-size: 15px; line-height: 1; color: #50575e; padding: 0 4px; }
+.ail-chip-x:hover { color: #b32d2e; }
+
+.ail-credit { margin: 16px 4px; color: #646970; font-size: 12px; }

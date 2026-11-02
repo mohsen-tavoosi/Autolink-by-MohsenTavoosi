@@ -1,0 +1,345 @@
+{
+ "about": "Autolink by MohsenTavoosi 2.2.0 feature vectors: long-phrase lock, smart link diversity, unlock_capped, short_inside, whole-page processing.",
+ "cases": [
+  {
+   "id": "LOCK-01",
+   "rule": "Long phrase at its limit still locks its spot: no short link inside it",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "خرید درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/a/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    },
+    {
+     "id": 2,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/b/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "html": "<p>خرید درب اتوماتیک ارزان.</p><p>باز هم خرید درب اتوماتیک.</p>",
+   "expected_html": "<p><a href=\"https://site.test/a/\">خرید درب اتوماتیک</a> ارزان.</p><p>باز هم خرید درب اتوماتیک.</p>"
+  },
+  {
+   "id": "LOCK-02",
+   "rule": "Same paragraph: second long phrase stays plain",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "خرید درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/a/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    },
+    {
+     "id": 2,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/b/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "html": "<p>خرید درب اتوماتیک و باز خرید درب اتوماتیک.</p>",
+   "expected_html": "<p><a href=\"https://site.test/a/\">خرید درب اتوماتیک</a> و باز خرید درب اتوماتیک.</p>"
+  },
+  {
+   "id": "LOCK-03",
+   "rule": "Short phrase alone (no longer phrase over it) gets its link",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "خرید درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/a/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    },
+    {
+     "id": 2,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/b/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "html": "<p>خرید درب اتوماتیک ارزان.</p><p>درب اتوماتیک چیست.</p>",
+   "expected_html": "<p><a href=\"https://site.test/a/\">خرید درب اتوماتیک</a> ارزان.</p><p><a href=\"https://site.test/b/\">درب اتوماتیک</a> چیست.</p>"
+  },
+  {
+   "id": "DIV-01",
+   "rule": "Smart diversity: keyword 1 of the record gets the first link even if it comes later; long spot stays locked",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "درب اتوماتیک",
+      "خرید درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/a/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "html": "<p>خرید درب اتوماتیک ارزان.</p><p>درب اتوماتیک چیست.</p>",
+   "expected_html": "<p>خرید درب اتوماتیک ارزان.</p><p><a href=\"https://site.test/a/\">درب اتوماتیک</a> چیست.</p>"
+  },
+  {
+   "id": "DIV-02",
+   "rule": "Smart diversity: second link goes to the first keyword not linked yet",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "alpha",
+      "beta",
+      "gamma"
+     ],
+     "target_url": "https://site.test/u/",
+     "max_links": 2,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "html": "<p>gamma beta alpha gamma</p>",
+   "expected_html": "<p>gamma <a href=\"https://site.test/u/\">beta</a> <a href=\"https://site.test/u/\">alpha</a> gamma</p>"
+  },
+  {
+   "id": "DIV-03",
+   "rule": "Smart diversity: after every keyword has a link, start again from keyword 1",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "alpha",
+      "beta"
+     ],
+     "target_url": "https://site.test/u/",
+     "max_links": 3,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "html": "<p>beta alpha beta alpha</p>",
+   "expected_html": "<p><a href=\"https://site.test/u/\">beta</a> <a href=\"https://site.test/u/\">alpha</a> beta <a href=\"https://site.test/u/\">alpha</a></p>"
+  },
+  {
+   "id": "DIV-04",
+   "rule": "Diversity off: only matching and limits, first in the text wins",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "alpha",
+      "beta",
+      "gamma"
+     ],
+     "target_url": "https://site.test/u/",
+     "max_links": 2,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "ctx": {
+    "opts": {
+     "diversity": false
+    }
+   },
+   "html": "<p>gamma beta alpha gamma</p>",
+   "expected_html": "<p><a href=\"https://site.test/u/\">gamma</a> <a href=\"https://site.test/u/\">beta</a> alpha gamma</p>"
+  },
+  {
+   "id": "DIV-05",
+   "rule": "Smart diversity sees the whole page: keyword 1 in a later fragment wins",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "alpha",
+      "beta"
+     ],
+     "target_url": "https://site.test/u/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "page_fragments": [
+    "<p>beta</p>",
+    "<p>alpha</p>"
+   ],
+   "expected_fragments": [
+    "<p>beta</p>",
+    "<p><a href=\"https://site.test/u/\">alpha</a></p>"
+   ]
+  },
+  {
+   "id": "DIV-06",
+   "rule": "Smart diversity: an existing right link counts as that keyword's link",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "alpha",
+      "beta"
+     ],
+     "target_url": "https://site.test/u/",
+     "max_links": 2,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "html": "<p><a href=\"https://site.test/u/\">alpha</a> alpha beta</p>",
+   "expected_html": "<p><a href=\"https://site.test/u/\">alpha</a> alpha <a href=\"https://site.test/u/\">beta</a></p>"
+  },
+  {
+   "id": "UNLOCK-01",
+   "rule": "Tick unlock_capped: a long phrase at its limit frees its spot, the short one links inside",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "خرید درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/a/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    },
+    {
+     "id": 2,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/b/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "ctx": {
+    "opts": {
+     "unlock_capped": true
+    }
+   },
+   "html": "<p>خرید درب اتوماتیک ارزان.</p><p>باز هم خرید درب اتوماتیک.</p>",
+   "expected_html": "<p><a href=\"https://site.test/a/\">خرید درب اتوماتیک</a> ارزان.</p><p>باز هم خرید <a href=\"https://site.test/b/\">درب اتوماتیک</a>.</p>"
+  },
+  {
+   "id": "INSIDE-01",
+   "rule": "Tick short_inside: short phrase with no link yet links once inside a long phrase that has no link",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "خرید درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/a/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    },
+    {
+     "id": 2,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/b/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "ctx": {
+    "opts": {
+     "short_inside": true
+    }
+   },
+   "html": "<p>خرید درب اتوماتیک یک.</p><p>خرید درب اتوماتیک دو.</p><p>خرید درب اتوماتیک سه.</p>",
+   "expected_html": "<p><a href=\"https://site.test/a/\">خرید درب اتوماتیک</a> یک.</p><p>خرید <a href=\"https://site.test/b/\">درب اتوماتیک</a> دو.</p><p>خرید درب اتوماتیک سه.</p>"
+  },
+  {
+   "id": "INSIDE-02",
+   "rule": "Tick short_inside: not used when the short phrase already has a link on the page",
+   "records": [
+    {
+     "id": 1,
+     "keywords": [
+      "خرید درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/a/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    },
+    {
+     "id": 2,
+     "keywords": [
+      "درب اتوماتیک"
+     ],
+     "target_url": "https://site.test/b/",
+     "max_links": 1,
+     "para_max": 0,
+     "para_mode": "p_br",
+     "post_ids": []
+    }
+   ],
+   "source": "2.2.0 Mohsen Tavoosi decisions 2026-10-24",
+   "ctx": {
+    "opts": {
+     "short_inside": true
+    }
+   },
+   "html": "<p>خرید درب اتوماتیک یک.</p><p>خرید درب اتوماتیک دو.</p><p>درب اتوماتیک تنها.</p>",
+   "expected_html": "<p><a href=\"https://site.test/a/\">خرید درب اتوماتیک</a> یک.</p><p>خرید درب اتوماتیک دو.</p><p><a href=\"https://site.test/b/\">درب اتوماتیک</a> تنها.</p>"
+  }
+ ]
+}

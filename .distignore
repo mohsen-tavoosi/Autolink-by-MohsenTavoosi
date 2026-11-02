@@ -1,0 +1,11 @@
+.git
+.github
+docs
+tests
+tools
+CONTRIBUTING.md
+SECURITY.md
+phpcs.xml.dist
+README.md
+CHANGELOG.md
+*.zip

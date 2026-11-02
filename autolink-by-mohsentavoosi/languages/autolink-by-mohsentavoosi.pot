@@ -1,0 +1,460 @@
+# Autolink by MohsenTavoosi translation template.
+# Copyright (C) Mohsen Tavoosi. Licensed under GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Autolink by MohsenTavoosi 2.2.0\n"
+"POT-Creation-Date: 2026-11-02 11:20+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: autolink-by-mohsentavoosi\n"
+
+#: includes/class-ail-admin.php:34 includes/class-ail-admin.php:930
+msgid "WordPress guide"
+msgstr ""
+
+#: includes/class-ail-admin.php:35
+msgid "General rules"
+msgstr ""
+
+#: includes/class-ail-admin.php:40
+msgid "Settings"
+msgstr ""
+
+#: includes/class-ail-admin.php:46 includes/class-ail-admin.php:626
+msgid "Autolink by MohsenTavoosi"
+msgstr ""
+
+#: includes/class-ail-admin.php:47
+msgid "Internal Links"
+msgstr ""
+
+#: includes/class-ail-admin.php:68
+msgid "Nothing found."
+msgstr ""
+
+#: includes/class-ail-admin.php:69 includes/class-ail-admin.php:573
+msgid "Remove"
+msgstr ""
+
+#: includes/class-ail-admin.php:78 includes/class-ail-admin.php:105 includes/class-ail-admin.php:180 includes/class-ail-admin.php:197 includes/class-ail-admin.php:245
+msgid "Unauthorized"
+msgstr ""
+
+#: includes/class-ail-admin.php:541
+msgid "Deleted item #%d"
+msgstr ""
+
+#: includes/class-ail-admin.php:544
+msgid "(no title)"
+msgstr ""
+
+#: includes/class-ail-admin.php:550
+msgid "Deleted term #%d"
+msgstr ""
+
+#: includes/class-ail-admin.php:567
+msgid "Search posts and pages by title or ID…"
+msgstr ""
+
+#: includes/class-ail-admin.php:567
+msgid "Search posts, pages and terms by title or ID…"
+msgstr ""
+
+#: includes/class-ail-admin.php:630
+msgid "Settings saved."
+msgstr ""
+
+#: includes/class-ail-admin.php:631
+msgid "Record saved."
+msgstr ""
+
+#: includes/class-ail-admin.php:632
+msgid "Record deleted."
+msgstr ""
+
+#: includes/class-ail-admin.php:633
+msgid "Error: Keywords and URL cannot be empty."
+msgstr ""
+
+#: includes/class-ail-admin.php:634
+msgid "Error: Maximum %d keywords per record."
+msgstr ""
+
+#: includes/class-ail-admin.php:635
+msgid "Error: The link URL must start with http://, https:// or a single slash (for example /my-page)."
+msgstr ""
+
+#: includes/class-ail-admin.php:636
+msgid "Error: This URL is already registered in another record. Each URL can only be used once."
+msgstr ""
+
+#: includes/class-ail-admin.php:637
+msgid "Error: No file selected for import."
+msgstr ""
+
+#: includes/class-ail-admin.php:638
+msgid "Error: The import file is larger than 1 MB."
+msgstr ""
+
+#: includes/class-ail-admin.php:639
+msgid "Error: Invalid import file. Please use a JSON file exported by this plugin. Nothing was changed."
+msgstr ""
+
+#: includes/class-ail-admin.php:646
+msgid "Error: The keyword \"%1$s\" already exists in record #%2$d. Each keyword must be unique across all records."
+msgstr ""
+
+#: includes/class-ail-admin.php:653
+msgid "Import complete. %1$d records imported. Skipped: %2$d invalid, %3$d duplicate URL, %4$d duplicate keyword."
+msgstr ""
+
+#: includes/class-ail-admin.php:663
+msgid "General Settings"
+msgstr ""
+
+#: includes/class-ail-admin.php:669
+msgid "Plugin status"
+msgstr ""
+
+#: includes/class-ail-admin.php:671
+msgid "Enabled"
+msgstr ""
+
+#: includes/class-ail-admin.php:672
+msgid "Turn off to remove every link from the pages without deactivating the plugin. Your records are kept."
+msgstr ""
+
+#: includes/class-ail-admin.php:676
+msgid "Half-space (ZWNJ)"
+msgstr ""
+
+#: includes/class-ail-admin.php:678
+msgid "Treat half-space (ZWNJ) as a space"
+msgstr ""
+
+#: includes/class-ail-admin.php:679
+msgid "On: a keyword written with a space and the same words joined by a half-space are the same keyword, in your keywords and in the page text. You only need one version of each keyword. Turn it off for languages where a half-space and a space mean different things. A half-space at the edge of a word still stops a partial match."
+msgstr ""
+
+#: includes/class-ail-admin.php:683
+msgid "Keyword order"
+msgstr ""
+
+#: includes/class-ail-admin.php:685
+msgid "Smart link diversity order by keywords per link based on Mohsen Tavoosi tutorial"
+msgstr ""
+
+#: includes/class-ail-admin.php:686
+msgid "Read the tutorial"
+msgstr ""
+
+#: includes/class-ail-admin.php:687
+msgid "On (recommended): inside each record, the first link on a page goes to keyword 1 (the first line), the next link to the first keyword that has no link on this page yet, and so on up to keyword 20. When every keyword found on the page has a link, it starts again from keyword 1. This spreads your links over all the keywords of a record instead of always linking the same words. Off: the order of keywords does not matter. The first match in the text gets the link, within the limits."
+msgstr ""
+
+#: includes/class-ail-admin.php:691
+msgid "Long phrases at their limit"
+msgstr ""
+
+#: includes/class-ail-admin.php:693
+msgid "Unlock longer phrases after their page limit: let shorter phrases inside them get linked"
+msgstr ""
+
+#: includes/class-ail-admin.php:694
+msgid "Off (default): a longer keyword always keeps its place, even when it already reached its limit and gets no link there. A shorter keyword is never linked inside it. Example: \"buy automatic door\" reached its limit, so in the next \"buy automatic door\" the words \"automatic door\" are not linked either. On: once the longer keyword reached its limit, the shorter keyword inside it can be linked, within its own limits."
+msgstr ""
+
+#: includes/class-ail-admin.php:698
+msgid "Short phrase without a link"
+msgstr ""
+
+#: includes/class-ail-admin.php:700
+msgid "Link a shorter phrase inside a longer matched phrase if the shorter phrase has not been linked yet on this page"
+msgstr ""
+
+#: includes/class-ail-admin.php:701
+msgid "Off (default): a shorter keyword gets a link only where it appears on its own. On: if a shorter keyword has no link anywhere on the page, it is linked once inside a longer keyword that did not get a link there (a link can never sit inside another link). After that one link the longer keyword keeps its place again."
+msgstr ""
+
+#: includes/class-ail-admin.php:705
+msgid "Front page"
+msgstr ""
+
+#: includes/class-ail-admin.php:707
+msgid "Add links on the front page"
+msgstr ""
+
+#: includes/class-ail-admin.php:708
+msgid "Off: the home page of the site never gets automatic links, whatever its post type."
+msgstr ""
+
+#: includes/class-ail-admin.php:712
+msgid "Excluded pages"
+msgstr ""
+
+#: includes/class-ail-admin.php:724
+msgid "These never get automatic links. Search by title or ID among the post types and taxonomies ticked below (posts, pages, products, categories, tags and others) and pick from the list. Save the settings after ticking a new post type or taxonomy to search in it."
+msgstr ""
+
+#: includes/class-ail-admin.php:728
+msgid "Post types"
+msgstr ""
+
+#: includes/class-ail-admin.php:733
+msgid "Links are added to the content of these post types. For WooCommerce products this covers the full and the short description, and both share one counter."
+msgstr ""
+
+#: includes/class-ail-admin.php:737
+msgid "Taxonomies"
+msgstr ""
+
+#: includes/class-ail-admin.php:742
+msgid "Links are added to the description of terms in these taxonomies (category, subcategory, tag, product category, product tag and custom ones)."
+msgstr ""
+
+#: includes/class-ail-admin.php:746
+msgid "On uninstall"
+msgstr ""
+
+#: includes/class-ail-admin.php:748
+msgid "Delete all plugin data when the plugin is deleted"
+msgstr ""
+
+#: includes/class-ail-admin.php:749
+msgid "Warning:"
+msgstr ""
+
+#: includes/class-ail-admin.php:749
+msgid "This removes every record and setting for good. Export a backup first. Off by default."
+msgstr ""
+
+#: includes/class-ail-admin.php:753
+msgid "Save Settings"
+msgstr ""
+
+#: includes/class-ail-admin.php:758
+msgid "Keywords & Links"
+msgstr ""
+
+#: includes/class-ail-admin.php:761 includes/class-ail-admin.php:766
+msgid "Add New Record"
+msgstr ""
+
+#: includes/class-ail-admin.php:766
+msgid "Edit Record"
+msgstr ""
+
+#: includes/class-ail-admin.php:773 includes/class-ail-admin.php:837
+msgid "Keywords"
+msgstr ""
+
+#: includes/class-ail-admin.php:775
+msgid "One keyword per line (max %d)"
+msgstr ""
+
+#: includes/class-ail-admin.php:776
+msgid "One keyword per line. Maximum %d keywords per record. All of them link to the same URL."
+msgstr ""
+
+#: includes/class-ail-admin.php:780 includes/class-ail-admin.php:838
+msgid "Link URL"
+msgstr ""
+
+#: includes/class-ail-admin.php:784
+msgid "Max links per page"
+msgstr ""
+
+#: includes/class-ail-admin.php:787
+msgid "How many times this keyword set can be linked on a single page."
+msgstr ""
+
+#: includes/class-ail-admin.php:791
+msgid "Max links per paragraph"
+msgstr ""
+
+#: includes/class-ail-admin.php:794
+msgid "no paragraph limit."
+msgstr ""
+
+#: includes/class-ail-admin.php:798
+msgid "Paragraph detection mode"
+msgstr ""
+
+#: includes/class-ail-admin.php:803
+msgid "Take <p> and <br> tags as paragraph"
+msgstr ""
+
+#: includes/class-ail-admin.php:807
+msgid "Take texts between headings as paragraph"
+msgstr ""
+
+#: includes/class-ail-admin.php:808
+msgid "All content between two headings (h1 to h6) is one paragraph. The text before the first heading and after the last heading are each one paragraph."
+msgstr ""
+
+#: includes/class-ail-admin.php:814
+msgid "Only on these pages"
+msgstr ""
+
+#: includes/class-ail-admin.php:823
+msgid "Search by title or ID and pick. Empty = every page. Use it to test a record on one page first. A record limited to some pages is not used in term descriptions."
+msgstr ""
+
+#: includes/class-ail-admin.php:827
+msgid "Save Changes"
+msgstr ""
+
+#: includes/class-ail-admin.php:827
+msgid "Add Record"
+msgstr ""
+
+#: includes/class-ail-admin.php:828
+msgid "Cancel"
+msgstr ""
+
+#: includes/class-ail-admin.php:839
+msgid "Max/Page"
+msgstr ""
+
+#: includes/class-ail-admin.php:840
+msgid "Max/Para"
+msgstr ""
+
+#: includes/class-ail-admin.php:841
+msgid "Para Mode"
+msgstr ""
+
+#: includes/class-ail-admin.php:842
+msgid "Post IDs"
+msgstr ""
+
+#: includes/class-ail-admin.php:843
+msgid "Actions"
+msgstr ""
+
+#: includes/class-ail-admin.php:848
+msgid "No records defined yet."
+msgstr ""
+
+#: includes/class-ail-admin.php:861
+msgid "Heading"
+msgstr ""
+
+#: includes/class-ail-admin.php:862
+msgid "All"
+msgstr ""
+
+#: includes/class-ail-admin.php:864
+msgid "Edit"
+msgstr ""
+
+#: includes/class-ail-admin.php:865
+msgid "Delete this record?"
+msgstr ""
+
+#: includes/class-ail-admin.php:869
+msgid "Delete"
+msgstr ""
+
+#: includes/class-ail-admin.php:880
+msgid "Import / Export"
+msgstr ""
+
+#: includes/class-ail-admin.php:883
+msgid "Export"
+msgstr ""
+
+#: includes/class-ail-admin.php:884
+msgid "Download all records and settings as a JSON file. Use it as a backup before updating, or to move to another site."
+msgstr ""
+
+#: includes/class-ail-admin.php:888
+msgid "Export All Records (JSON)"
+msgstr ""
+
+#: includes/class-ail-admin.php:895
+msgid "Import"
+msgstr ""
+
+#: includes/class-ail-admin.php:896
+msgid "Upload a JSON file exported by this plugin (up to 1 MB). Duplicate URLs and keywords are skipped and counted."
+msgstr ""
+
+#: includes/class-ail-admin.php:901
+msgid "Merge"
+msgstr ""
+
+#: includes/class-ail-admin.php:901
+msgid "add the imported records to the existing ones (skip duplicates)"
+msgstr ""
+
+#: includes/class-ail-admin.php:902
+msgid "Replace"
+msgstr ""
+
+#: includes/class-ail-admin.php:902
+msgid "delete all existing records first, then import"
+msgstr ""
+
+#: includes/class-ail-admin.php:906
+msgid "This will DELETE all existing records and replace them with the imported data. Continue?"
+msgstr ""
+
+#: includes/class-ail-admin.php:906
+msgid "Import Records"
+msgstr ""
+
+#: includes/class-ail-admin.php:913
+msgid "How it works"
+msgstr ""
+
+#: includes/class-ail-admin.php:915
+msgid "Keywords match whole words only, and upper or lower case does not matter."
+msgstr ""
+
+#: includes/class-ail-admin.php:916
+msgid "With the half-space switch on, a space and a half-space between the words of a keyword are the same."
+msgstr ""
+
+#: includes/class-ail-admin.php:917
+msgid "Longer keywords win over shorter ones, across all records."
+msgstr ""
+
+#: includes/class-ail-admin.php:918
+msgid "An existing link whose text is exactly one of your keywords but points to another URL is corrected when the page is shown."
+msgstr ""
+
+#: includes/class-ail-admin.php:919
+msgid "Links whose text is longer than the keyword, or unrelated to your keywords, are left alone."
+msgstr ""
+
+#: includes/class-ail-admin.php:920
+msgid "A page never links to itself."
+msgstr ""
+
+#: includes/class-ail-admin.php:921
+msgid "Each URL and each keyword can be used in one record only."
+msgstr ""
+
+#: includes/class-ail-admin.php:922
+msgid "Links are added while the page is shown. Your posts and the database content are never changed."
+msgstr ""
+
+#: includes/class-ail-admin.php:923
+msgid "If you use a page cache or a CDN, clear it after changing records."
+msgstr ""
+
+#: includes/class-ail-admin.php:928
+msgid "Made by"
+msgstr ""
+
+#: includes/class-ail-admin.php:931
+msgid "General rules of automatic internal linking"
+msgstr ""
+
+#: includes/class-ail-admin.php:890
+msgid "%d record"
+msgid_plural "%d records"
+msgstr[0] ""
+msgstr[1] ""
