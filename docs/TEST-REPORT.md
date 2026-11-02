@@ -32,3 +32,10 @@
 - Found and fixed with a real WordPress run: after the prefix change the admin form handlers and the title search AJAX were still registered under the old `ail_` names, so the forms would not have reached them. New static test `tests/action-names.php` (25 checks) compares every form action, script action, hook and nonce. It fails on the old code (17 failures) and passes now.
 - Real WordPress checks that passed: all 6 hooks registered, a record saved through admin-post with nonce (row stored, redirect `kw_saved`), a front-end page request shows the links with no leftover markers (0 `ail-s:` in the source), front page returns HTTP 200.
 - Still not run: MySQL (table rename), Elementor, WooCommerce, page cache plugins.
+
+## 2 Nov 2026, version 2.2.1
+- All five automated suites pass: 78/78 engine vectors, 12/12 whole-page, 7/7 migration, admin smoke, 25/25 action-name consistency. CI green on commit 5d27e5b.
+- phpcs WordPress-Extra: 0 findings.
+- Official Plugin Check on the 2.2.1 zip: 0 errors, 0 warnings. The same check on 2.2.0 gave 62 database warnings, all on the plugin's own table; they are now marked with a reason in the code. A control run on the 2.2.0 files still showed the 62, so the check is sensitive. The owner also ran the WordPress.org version of the check: no errors.
+- Real WordPress 7.1 with SQLite: all 6 admin hooks registered, a record saved through admin-post with its nonce, front-end output linked without leftover markers.
+- Still not run: real MySQL, Elementor, WooCommerce, page-cache plugins (see LIVE-TEST-CHECKLIST.md).
