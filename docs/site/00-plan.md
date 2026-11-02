@@ -25,7 +25,7 @@
 - فقط گیت‌هاب: کد، Issue، تست‌ها، CONTRIBUTING، SECURITY.
 
 ## باز مانده
-- نشانی گیت‌هاب در متن‌ها به شکل `https://github.com/mohsen-tavoosi/Autolink-by-MohsenTavoosi` جا خالی دارد. پس از مشخص شدن `owner/repo` جایگزین می‌شود.
+- نشانی گیت‌هاب در متن‌ها تنظیم شده است (https://github.com/mohsen-tavoosi/Autolink-by-MohsenTavoosi). بعد از تایید مخزن وردپرس، لینک آنجا هم به صفحه‌ها اضافه می‌شود.
 - نسخه‌ی انگلیسی و زبان‌های دیگر ساخته نشده (بعد از نهایی شدن فارسی، با `article-multilingual-localization`).
 - اسکرین‌شات پنل برای صفحه‌های ۱ و ۲ و ۳ لازم است و بعد از تست روی وردپرس واقعی گرفته می‌شود.
 - پیش از انتشار: مرور لحن با `mohsentavoosi-voice`، و لینک‌های داخلی طبق جدول V68.
