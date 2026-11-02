@@ -11,5 +11,12 @@
 			<property name="text_domain" type="array"><element value="autolink-by-mohsentavoosi"/></property>
 		</properties>
 	</rule>
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="mtal"/>
+			</property>
+		</properties>
+	</rule>
 	<config name="testVersion" value="7.4-"/>
 </ruleset>

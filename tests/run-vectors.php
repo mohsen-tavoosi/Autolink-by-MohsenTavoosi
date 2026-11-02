@@ -4,9 +4,9 @@
 // Case formats: html/expected_html, fragments/expected_fragments (one by one, shared state),
 // page_fragments/expected_fragments (processed together as one page), posts (archive: one state per post).
 // ctx.opts sets diversity, unlock_capped, short_inside (defaults: true, false, false).
-define( 'AIL_TESTING', true );
+define( 'MTAL_TESTING', true );
 function esc_url_raw( $u, $p = null ) { return $u; }
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-ail-processor.php';
+require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-processor.php';
 
 $files = array( __DIR__ . '/shared-vectors.json', __DIR__ . '/plugin-vectors.json', __DIR__ . '/feature-vectors.json' );
 $total = 0; $fail = 0;
@@ -18,28 +18,28 @@ foreach ( $files as $f ) {
 		if ( ! isset( $c['records'] ) ) { continue; } // Not an engine case.
 		$ctx = array_merge( $base, isset( $c['ctx'] ) ? $c['ctx'] : array() );
 		unset( $ctx['zwnj_is_letter'] );
-		$prep = AIL_Processor::prepare( $c['records'], (bool) $ctx['zwnj_as_space'] );
+		$prep = MTAL_Processor::prepare( $c['records'], (bool) $ctx['zwnj_as_space'] );
 		if ( isset( $c['posts'] ) ) {
 			$got = array(); $want = array();
 			foreach ( $c['posts'] as $p ) {
-				$state = AIL_Processor::new_state();
-				$got[]  = AIL_Processor::run( $p['html'], $prep, array_merge( $ctx, $p['ctx'] ), $state );
+				$state = MTAL_Processor::new_state();
+				$got[]  = MTAL_Processor::run( $p['html'], $prep, array_merge( $ctx, $p['ctx'] ), $state );
 				$want[] = $p['expected_html'];
 			}
 		} elseif ( isset( $c['page_fragments'] ) ) {
-			$state = AIL_Processor::new_state();
-			$got   = AIL_Processor::run_page( $c['page_fragments'], $prep, $ctx, $state );
+			$state = MTAL_Processor::new_state();
+			$got   = MTAL_Processor::run_page( $c['page_fragments'], $prep, $ctx, $state );
 			$want  = $c['expected_fragments'];
 		} elseif ( isset( $c['fragments'] ) ) {
-			$state = AIL_Processor::new_state(); $got = array();
+			$state = MTAL_Processor::new_state(); $got = array();
 			foreach ( $c['fragments'] as $x ) {
-				if ( ! empty( $c['new_state_per_fragment'] ) ) { $state = AIL_Processor::new_state(); }
-				$got[] = AIL_Processor::run( $x, $prep, $ctx, $state );
+				if ( ! empty( $c['new_state_per_fragment'] ) ) { $state = MTAL_Processor::new_state(); }
+				$got[] = MTAL_Processor::run( $x, $prep, $ctx, $state );
 			}
 			$want = $c['expected_fragments'];
 		} else {
-			$state = AIL_Processor::new_state();
-			$got   = AIL_Processor::run( $c['html'], $prep, $ctx, $state );
+			$state = MTAL_Processor::new_state();
+			$got   = MTAL_Processor::run( $c['html'], $prep, $ctx, $state );
 			$want  = $c['expected_html'];
 		}
 		$ok = $got === $want;

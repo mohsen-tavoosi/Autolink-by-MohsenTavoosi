@@ -1,24 +1,24 @@
 <?php
 /**
- * Plugin settings (options with the ail_ prefix).
+ * Plugin settings (options with the mtal_ prefix).
  *
- * @package Auto_Internal_Links
+ * @package Autolink_By_MohsenTavoosi
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AIL_Settings {
+class MTAL_Settings {
 
 	/** R17: global on/off switch, without deactivating the plugin. */
 	public static function enabled() {
-		return (bool) get_option( 'ail_enabled', 1 );
+		return (bool) get_option( 'mtal_enabled', 1 );
 	}
 
 	/** Treat a half-space (ZWNJ) in the page text and in keywords as a normal space. On by default. */
 	public static function zwnj_as_space() {
-		return (bool) get_option( 'ail_zwnj_as_space', 1 );
+		return (bool) get_option( 'mtal_zwnj_as_space', 1 );
 	}
 
 	/** Public post types as slug => label. */
@@ -44,7 +44,7 @@ class AIL_Settings {
 	 * which is how the plugin behaved before this setting existed.
 	 */
 	public static function post_types() {
-		$saved = get_option( 'ail_post_types', false );
+		$saved = get_option( 'mtal_post_types', false );
 		if ( ! is_array( $saved ) ) {
 			return array_keys( self::public_post_types() );
 		}
@@ -53,7 +53,7 @@ class AIL_Settings {
 
 	/** R18: taxonomies whose term descriptions get links. Off until chosen. */
 	public static function taxonomies() {
-		$saved = get_option( 'ail_taxonomies', array() );
+		$saved = get_option( 'mtal_taxonomies', array() );
 		return is_array( $saved ) ? array_values( array_map( 'sanitize_key', $saved ) ) : array();
 	}
 
@@ -67,32 +67,32 @@ class AIL_Settings {
 
 	/** Smart link diversity: each record links its keywords in their saved order. On by default. */
 	public static function diversity() {
-		return (bool) get_option( 'ail_diversity', 1 );
+		return (bool) get_option( 'mtal_diversity', 1 );
 	}
 
 	/** A long phrase that reached its limit frees its spot for shorter keywords. Off by default. */
 	public static function unlock_capped() {
-		return (bool) get_option( 'ail_unlock_capped', 0 );
+		return (bool) get_option( 'mtal_unlock_capped', 0 );
 	}
 
 	/** A shorter phrase with no link yet on the page may link once inside a long phrase that has no link. Off by default. */
 	public static function short_inside() {
-		return (bool) get_option( 'ail_short_inside', 0 );
+		return (bool) get_option( 'mtal_short_inside', 0 );
 	}
 
 	/** Add links on the front page. On by default. */
 	public static function front_page() {
-		return (bool) get_option( 'ail_front_page', 1 );
+		return (bool) get_option( 'mtal_front_page', 1 );
 	}
 
 	/** Post IDs (any post type) that never get links. */
 	public static function exclude_posts() {
-		return self::id_list( get_option( 'ail_exclude_posts', array() ) );
+		return self::id_list( get_option( 'mtal_exclude_posts', array() ) );
 	}
 
 	/** Term IDs (any taxonomy) whose description never gets links. */
 	public static function exclude_terms() {
-		return self::id_list( get_option( 'ail_exclude_terms', array() ) );
+		return self::id_list( get_option( 'mtal_exclude_terms', array() ) );
 	}
 
 	public static function post_excluded( $post_id ) {
@@ -128,7 +128,7 @@ class AIL_Settings {
 	}
 
 	public static function delete_on_uninstall() {
-		return (bool) get_option( 'ail_delete_on_uninstall', 0 );
+		return (bool) get_option( 'mtal_delete_on_uninstall', 0 );
 	}
 
 	/** Keep only values that exist in $allowed. */

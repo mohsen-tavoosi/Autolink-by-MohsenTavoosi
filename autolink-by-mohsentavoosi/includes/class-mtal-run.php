@@ -1,6 +1,6 @@
 <?php
 /**
- * One processing run over all content fragments of one page. Internal helper of AIL_Processor.
+ * One processing run over all content fragments of one page. Internal helper of MTAL_Processor.
  *
  * Steps:
  * 1. Existing links (R11): right link kept and counted, wrong link unwrapped.
@@ -14,16 +14,16 @@
  *
  * The DOM API uses camelCase property names (childNodes, parentNode, ...), which is why the naming sniff is off here.
  *
- * @package Auto_Internal_Links
+ * @package Autolink_By_MohsenTavoosi
  */
 
 // phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
-if ( ! defined( 'ABSPATH' ) && ! defined( 'AIL_TESTING' ) ) {
+if ( ! defined( 'ABSPATH' ) && ! defined( 'MTAL_TESTING' ) ) {
 	exit;
 }
 
-class AIL_Run {
+class MTAL_Run {
 
 	private $rules;
 	private $cands;
@@ -167,12 +167,12 @@ class AIL_Run {
 			if ( '' === $href || '#' === $href[0] || preg_match( '#^(?!https?:)[a-z][a-z0-9+.\-]*:#i', $href ) ) {
 				continue; // Anchors, mailto, tel and similar are never ours.
 			}
-			$text = AIL_Processor::norm_text( $a->textContent, $this->zwnj, false );
+			$text = MTAL_Processor::norm_text( $a->textContent, $this->zwnj, false );
 			foreach ( $this->rules as $id => $r ) {
 				if ( ! isset( $r['norm'][ $text ] ) ) {
 					continue;
 				}
-				if ( AIL_Processor::norm_url( $href, $this->home ) === AIL_Processor::norm_url( $r['target_url'], $this->home ) ) {
+				if ( MTAL_Processor::norm_url( $href, $this->home ) === MTAL_Processor::norm_url( $r['target_url'], $this->home ) ) {
 					$this->bump( 'page', $id );
 					$this->state['kw'][ $id ][ $r['norm'][ $text ] ] = $this->get_kw( $id, $r['norm'][ $text ] ) + 1;
 					$this->bump( 'phrase', $text );
@@ -323,9 +323,10 @@ class AIL_Run {
 		usort(
 			$keys,
 			function ( $a, $b ) {
-				$ca = $this->claims[ $a ];
-				$cb = $this->claims[ $b ];
-				return ( $ca['n'] <=> $cb['n'] ) ?: ( $ca['s'] <=> $cb['s'] );
+				$ca   = $this->claims[ $a ];
+				$cb   = $this->claims[ $b ];
+				$by_n = $ca['n'] <=> $cb['n'];
+				return 0 !== $by_n ? $by_n : ( $ca['s'] <=> $cb['s'] );
 			}
 		);
 		if ( empty( $this->opts['diversity'] ) ) {
@@ -339,8 +340,8 @@ class AIL_Run {
 		// Smart link diversity: per record, keywords in their saved order, round by round.
 		$by_rule = array();
 		foreach ( $keys as $k ) {
-			$c                                     = $this->claims[ $k ];
-			$by_rule[ $c['id'] ][ $c['kw'] ][]     = $k;
+			$c                                 = $this->claims[ $k ];
+			$by_rule[ $c['id'] ][ $c['kw'] ][] = $k;
 		}
 		foreach ( $by_rule as $id => $by_kw ) {
 			ksort( $by_kw );
@@ -392,14 +393,14 @@ class AIL_Run {
 	}
 
 	private function link( $k ) {
-		$c                                 = &$this->claims[ $k ];
-		$c['linked']                       = true;
-		$id                                = $c['id'];
+		$c           = &$this->claims[ $k ];
+		$c['linked'] = true;
+		$id          = $c['id'];
 		$this->bump( 'page', $id );
 		$this->state['kw'][ $id ][ $c['kw'] ] = $this->get_kw( $id, $c['kw'] ) + 1;
 		$this->bump( 'phrase', $c['phrase'] );
-		$pk                                = $this->para_key( $k );
-		$this->state['para'][ $pk ]        = ( isset( $this->state['para'][ $pk ] ) ? $this->state['para'][ $pk ] : 0 ) + 1;
+		$pk                         = $this->para_key( $k );
+		$this->state['para'][ $pk ] = ( isset( $this->state['para'][ $pk ] ) ? $this->state['para'][ $pk ] : 0 ) + 1;
 	}
 
 	// ── 4. Optional ticks ───────────────────────────────────────────────────

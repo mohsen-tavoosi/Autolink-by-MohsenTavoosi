@@ -4,14 +4,14 @@
  *
  * Every callback starts with the global switch (R17).
  *
- * @package Auto_Internal_Links
+ * @package Autolink_By_MohsenTavoosi
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AIL_Hooks {
+class MTAL_Hooks {
 
 	/** One state per post or term (R15), for the whole request. */
 	private static $states = array();
@@ -33,7 +33,7 @@ class AIL_Hooks {
 	private static $seq = 0;
 
 	public static function init() {
-		if ( ! AIL_Settings::enabled() ) {
+		if ( ! MTAL_Settings::enabled() ) {
 			return; // Second safety net: every callback also checks the switch.
 		}
 		add_filter( 'the_content', array( __CLASS__, 'filter_content' ), 99 );
@@ -55,13 +55,13 @@ class AIL_Hooks {
 	 * see the whole page. Menus, header and footer are never touched because they are not marked.
 	 */
 	public static function start_buffer() {
-		if ( ! AIL_Settings::enabled() || self::skip_request() || is_feed() || is_robots() || is_trackback() || wp_doing_ajax() ) {
+		if ( ! MTAL_Settings::enabled() || self::skip_request() || is_feed() || is_robots() || is_trackback() || wp_doing_ajax() ) {
 			return;
 		}
 		if ( function_exists( 'wp_is_json_request' ) && wp_is_json_request() ) {
 			return;
 		}
-		if ( ! apply_filters( 'ail_whole_page', true ) ) {
+		if ( ! apply_filters( 'mtal_whole_page', true ) ) {
 			return; // Escape hatch: process each fragment on its own, like version 2.1.
 		}
 		self::$buffering = true;
@@ -108,9 +108,9 @@ class AIL_Hooks {
 			$outs  = $frags;
 			if ( $ctx && ! empty( $prep['cands'] ) ) {
 				if ( ! isset( self::$states[ $key ] ) ) {
-					self::$states[ $key ] = AIL_Processor::new_state();
+					self::$states[ $key ] = MTAL_Processor::new_state();
 				}
-				$outs = AIL_Processor::run_page( $frags, $prep, $ctx, self::$states[ $key ] );
+				$outs = MTAL_Processor::run_page( $frags, $prep, $ctx, self::$states[ $key ] );
 			}
 			foreach ( $items as $i => $it ) {
 				$repl[ $it['start'] ] = array( $it['len'], $outs[ $i ] );
@@ -130,19 +130,19 @@ class AIL_Hooks {
 	private static function ctx_for_key( $key ) {
 		list( $type, $id ) = explode( ':', $key );
 		$id                = (int) $id;
-		if ( ! AIL_Settings::front_page() && is_front_page() ) {
+		if ( ! MTAL_Settings::front_page() && is_front_page() ) {
 			return null;
 		}
 		if ( 'post' === $type ) {
 			$pt = get_post_type( $id );
-			if ( ! $pt || ! AIL_Settings::post_type_allowed( $pt ) || AIL_Settings::post_excluded( $id ) ) {
+			if ( ! $pt || ! MTAL_Settings::post_type_allowed( $pt ) || MTAL_Settings::post_excluded( $id ) ) {
 				return null;
 			}
 			$url = (string) get_permalink( $id );
 			$pid = $id;
 		} else {
 			$term = get_term( $id );
-			if ( ! ( $term instanceof WP_Term ) || ! AIL_Settings::taxonomy_allowed( $term->taxonomy ) || AIL_Settings::term_excluded( $id ) ) {
+			if ( ! ( $term instanceof WP_Term ) || ! MTAL_Settings::taxonomy_allowed( $term->taxonomy ) || MTAL_Settings::term_excluded( $id ) ) {
 				return null;
 			}
 			$url = self::term_url( $id, $term->taxonomy );
@@ -152,7 +152,7 @@ class AIL_Hooks {
 			'post_id'     => $pid,
 			'current_url' => $url,
 			'home'        => home_url(),
-			'opts'        => AIL_Settings::run_opts(),
+			'opts'        => MTAL_Settings::run_opts(),
 		);
 	}
 
@@ -173,18 +173,18 @@ class AIL_Hooks {
 
 	/** Gutenberg, classic editor, WPBakery, Toolset content templates and WooCommerce full description. */
 	public static function filter_content( $content ) {
-		if ( ! AIL_Settings::enabled() ) {
+		if ( ! MTAL_Settings::enabled() ) {
 			return $content;
 		}
 		if ( ! is_string( $content ) || '' === $content || self::skip_request() || doing_filter( 'get_the_excerpt' ) ) {
 			return $content;
 		}
 		$post = get_post();
-		if ( ! $post || ! AIL_Settings::post_type_allowed( $post->post_type ) ) {
+		if ( ! $post || ! MTAL_Settings::post_type_allowed( $post->post_type ) ) {
 			return $content;
 		}
 		// Elementor pages are handled widget by widget. Processing the whole page again would count links twice.
-		if ( AIL_Elementor::is_built_with_elementor( $post->ID ) ) {
+		if ( MTAL_Elementor::is_built_with_elementor( $post->ID ) ) {
 			return $content;
 		}
 		return self::process( $content, 'post', (int) $post->ID, (int) $post->ID, (string) get_permalink( $post ) );
@@ -192,14 +192,14 @@ class AIL_Hooks {
 
 	/** WooCommerce short description. It shares the product counter with the full description. */
 	public static function filter_wc_short_description( $text ) {
-		if ( ! AIL_Settings::enabled() ) {
+		if ( ! MTAL_Settings::enabled() ) {
 			return $text;
 		}
 		if ( ! is_string( $text ) || '' === $text || self::skip_request() ) {
 			return $text;
 		}
 		$post = get_post();
-		if ( ! $post || ! AIL_Settings::post_type_allowed( $post->post_type ) ) {
+		if ( ! $post || ! MTAL_Settings::post_type_allowed( $post->post_type ) ) {
 			return $text;
 		}
 		return self::process( $text, 'post', (int) $post->ID, (int) $post->ID, (string) get_permalink( $post ) );
@@ -207,13 +207,13 @@ class AIL_Hooks {
 
 	/** Term description (category, tag, product_cat, product_tag, custom taxonomies). */
 	public static function filter_term_description( $value, $term_id = 0, $taxonomy = '', $context = '' ) {
-		if ( ! AIL_Settings::enabled() ) {
+		if ( ! MTAL_Settings::enabled() ) {
 			return $value;
 		}
 		if ( 'display' !== $context || ! is_string( $value ) || '' === $value || self::skip_request() ) {
 			return $value;
 		}
-		if ( ! AIL_Settings::taxonomy_allowed( $taxonomy ) ) {
+		if ( ! MTAL_Settings::taxonomy_allowed( $taxonomy ) ) {
 			return $value;
 		}
 		return self::process( $value, 'term', (int) $term_id, 0, self::term_url( (int) $term_id, $taxonomy ) );
@@ -221,7 +221,7 @@ class AIL_Hooks {
 
 	/** Toolset View output, only when it is not already inside the_content. */
 	public static function filter_toolset_view( $output ) {
-		if ( ! AIL_Settings::enabled() ) {
+		if ( ! MTAL_Settings::enabled() ) {
 			return $output;
 		}
 		if ( ! is_string( $output ) || '' === $output || self::skip_request() || doing_filter( 'the_content' ) ) {
@@ -232,7 +232,7 @@ class AIL_Hooks {
 			return $output;
 		}
 		$type = get_post_type( $id );
-		if ( ! $type || ! AIL_Settings::post_type_allowed( $type ) ) {
+		if ( ! $type || ! MTAL_Settings::post_type_allowed( $type ) ) {
 			return $output;
 		}
 		return self::process( $output, 'post', $id, $id, (string) get_permalink( $id ) );
@@ -244,11 +244,11 @@ class AIL_Hooks {
 	 */
 	public static function wc_archive_start() {
 		self::$wc_buffer_level = null;
-		if ( ! AIL_Settings::enabled() || self::skip_request() || ! function_exists( 'is_tax' ) || ! is_tax() ) {
+		if ( ! MTAL_Settings::enabled() || self::skip_request() || ! function_exists( 'is_tax' ) || ! is_tax() ) {
 			return;
 		}
 		$term = get_queried_object();
-		if ( ! ( $term instanceof WP_Term ) || ! AIL_Settings::taxonomy_allowed( $term->taxonomy ) ) {
+		if ( ! ( $term instanceof WP_Term ) || ! MTAL_Settings::taxonomy_allowed( $term->taxonomy ) ) {
 			return;
 		}
 		ob_start();
@@ -266,7 +266,7 @@ class AIL_Hooks {
 		}
 		$html = (string) ob_get_clean();
 		$term = get_queried_object();
-		if ( $term instanceof WP_Term && AIL_Settings::enabled() ) {
+		if ( $term instanceof WP_Term && MTAL_Settings::enabled() ) {
 			$html = self::process( $html, 'term', (int) $term->term_id, 0, self::term_url( (int) $term->term_id, $term->taxonomy ) );
 		}
 		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Same markup the theme already printed.
@@ -284,13 +284,13 @@ class AIL_Hooks {
 	 * @param string $url     Permalink of the page being rendered, to avoid self links.
 	 */
 	public static function process( $html, $type, $id, $post_id, $url ) {
-		if ( 'post' === $type && AIL_Settings::post_excluded( $id ) ) {
+		if ( 'post' === $type && MTAL_Settings::post_excluded( $id ) ) {
 			return $html;
 		}
-		if ( 'term' === $type && AIL_Settings::term_excluded( $id ) ) {
+		if ( 'term' === $type && MTAL_Settings::term_excluded( $id ) ) {
 			return $html;
 		}
-		if ( ! AIL_Settings::front_page() && function_exists( 'is_front_page' ) && is_front_page() ) {
+		if ( ! MTAL_Settings::front_page() && function_exists( 'is_front_page' ) && is_front_page() ) {
 			return $html;
 		}
 		if ( isset( self::$seen[ md5( $html ) ] ) || false !== strpos( $html, '<!--ail-s:' ) ) {
@@ -305,7 +305,7 @@ class AIL_Hooks {
 			'post_id'     => $post_id,
 			'current_url' => $url,
 			'home'        => home_url(),
-			'opts'        => AIL_Settings::run_opts(),
+			'opts'        => MTAL_Settings::run_opts(),
 		);
 		if ( self::$buffering ) {
 			if ( ! isset( self::$contexts[ $key ] ) ) {
@@ -315,9 +315,9 @@ class AIL_Hooks {
 			return '<!--ail-s:' . $key . ':' . $n . '-->' . $html . '<!--ail-e:' . $key . ':' . $n . '-->';
 		}
 		if ( ! isset( self::$states[ $key ] ) ) {
-			self::$states[ $key ] = AIL_Processor::new_state();
+			self::$states[ $key ] = MTAL_Processor::new_state();
 		}
-		$out = AIL_Processor::run( $html, $prep, $ctx, self::$states[ $key ] );
+		$out                       = MTAL_Processor::run( $html, $prep, $ctx, self::$states[ $key ] );
 		self::$seen[ md5( $out ) ] = true;
 		return $out;
 	}
@@ -343,9 +343,9 @@ class AIL_Hooks {
 	private static function prepared() {
 		if ( null === self::$prepared ) {
 			global $wpdb;
-			$table = $wpdb->prefix . 'ail_keywords';
-			$rows  = $wpdb->get_results( "SELECT id, keywords, target_url, max_links, para_max, para_mode, post_ids FROM {$table} ORDER BY id ASC", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name only.
-			self::$prepared = AIL_Processor::prepare( is_array( $rows ) ? $rows : array(), AIL_Settings::zwnj_as_space() );
+			$table          = $wpdb->prefix . 'mtal_keywords';
+			$rows           = $wpdb->get_results( "SELECT id, keywords, target_url, max_links, para_max, para_mode, post_ids FROM {$table} ORDER BY id ASC", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name only.
+			self::$prepared = MTAL_Processor::prepare( is_array( $rows ) ? $rows : array(), MTAL_Settings::zwnj_as_space() );
 		}
 		return self::$prepared;
 	}

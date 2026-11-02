@@ -5,14 +5,14 @@
  * Elementor renders widgets itself, so each widget's HTML is processed on
  * elementor/widget/render_content (priority 99). All widgets of one page share one counter (R15).
  *
- * @package Auto_Internal_Links
+ * @package Autolink_By_MohsenTavoosi
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AIL_Elementor {
+class MTAL_Elementor {
 
 	/** Widgets that print the post content. the_content already handles them. */
 	private static $skip_widgets = array( 'theme-post-content', 'woocommerce-product-content' );
@@ -20,31 +20,31 @@ class AIL_Elementor {
 	private static $built = array();
 
 	public static function init() {
-		if ( ! AIL_Settings::enabled() ) {
+		if ( ! MTAL_Settings::enabled() ) {
 			return;
 		}
 		add_filter( 'elementor/widget/render_content', array( __CLASS__, 'filter_widget_content' ), 99, 2 );
 	}
 
 	public static function filter_widget_content( $content, $widget = null ) {
-		if ( ! AIL_Settings::enabled() ) {
+		if ( ! MTAL_Settings::enabled() ) {
 			return $content;
 		}
-		if ( ! is_string( $content ) || '' === $content || AIL_Hooks::skip_request() || self::is_editor() ) {
+		if ( ! is_string( $content ) || '' === $content || MTAL_Hooks::skip_request() || self::is_editor() ) {
 			return $content;
 		}
 		if ( is_object( $widget ) && method_exists( $widget, 'get_name' ) && in_array( $widget->get_name(), self::$skip_widgets, true ) ) {
 			return $content;
 		}
-		$id = AIL_Hooks::current_post_id();
+		$id = MTAL_Hooks::current_post_id();
 		if ( ! $id ) {
 			return $content;
 		}
 		$type = get_post_type( $id );
-		if ( ! $type || ! AIL_Settings::post_type_allowed( $type ) ) {
+		if ( ! $type || ! MTAL_Settings::post_type_allowed( $type ) ) {
 			return $content;
 		}
-		return AIL_Hooks::process( $content, 'post', $id, $id, (string) get_permalink( $id ) );
+		return MTAL_Hooks::process( $content, 'post', $id, $id, (string) get_permalink( $id ) );
 	}
 
 	/** True when Elementor builds this post, so its widgets do the work instead of the_content. */

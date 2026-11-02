@@ -6,22 +6,27 @@
  * parameters, so the shared test vectors can run it outside WordPress.
  * It never writes anything: it only turns an HTML string into another HTML string (R01).
  *
- * @package Auto_Internal_Links
+ * @package Autolink_By_MohsenTavoosi
  */
 
-if ( ! defined( 'ABSPATH' ) && ! defined( 'AIL_TESTING' ) ) {
+if ( ! defined( 'ABSPATH' ) && ! defined( 'MTAL_TESTING' ) ) {
 	exit;
 }
 
-require_once __DIR__ . '/class-ail-run.php';
+require_once __DIR__ . '/class-mtal-run.php';
 
-class AIL_Processor {
+class MTAL_Processor {
 
 	const ZWNJ = "\xE2\x80\x8C";
 
 	/** Fresh per-context state (one per post or term, R15). */
 	public static function new_state() {
-		return array( 'page' => array(), 'kw' => array(), 'phrase' => array(), 'para' => array() );
+		return array(
+			'page'   => array(),
+			'kw'     => array(),
+			'phrase' => array(),
+			'para'   => array(),
+		);
 	}
 
 	/**
@@ -251,7 +256,7 @@ class AIL_Processor {
 
 		$zwnj = ! empty( $prep['zwnj'] );
 		$try  = $state;
-		$run  = new AIL_Run( $active, $cands, $try, $zwnj, $home, $opts );
+		$run  = new MTAL_Run( $active, $cands, $try, $zwnj, $home, $opts );
 		$out  = $run->execute( $fragments );
 		if ( null !== $out ) {
 			$state = $try;
@@ -260,7 +265,7 @@ class AIL_Processor {
 		// A fragment could not be wrapped safely: process them one by one with the shared state.
 		$out = array();
 		foreach ( $fragments as $f ) {
-			$run   = new AIL_Run( $active, $cands, $state, $zwnj, $home, $opts );
+			$run   = new MTAL_Run( $active, $cands, $state, $zwnj, $home, $opts );
 			$one   = '' === trim( $f ) ? null : $run->execute( array( $f ) );
 			$out[] = null === $one ? $f : $one[0];
 		}

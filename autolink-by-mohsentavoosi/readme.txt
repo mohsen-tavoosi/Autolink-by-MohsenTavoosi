@@ -66,6 +66,7 @@ Your records are kept unless you ticked "Delete all plugin data when the plugin 
 == Changelog ==
 
 = 2.2.0 =
+* Rename: the plugin is now Autolink by MohsenTavoosi. Your records and settings move to the new internal names automatically on the first load. Export a backup before updating.
 * New: a longer keyword always keeps its place, even after it reached its limit. A shorter keyword is never linked inside it.
 * New: "Smart link diversity order by keywords per link" (on by default). Link 1 goes to keyword 1, the next to the first keyword not linked yet on the page, up to keyword 20, then it starts again.
 * New: option to unlock longer phrases after their page limit (off by default).

@@ -15,7 +15,7 @@
 	var importForm = document.getElementById('ail-import-form');
 	if (importForm) {
 		importForm.addEventListener('submit', function (e) {
-			var mode = importForm.querySelector('input[name=ail_import_mode]:checked');
+			var mode = importForm.querySelector('input[name=mtal_import_mode]:checked');
 			var btn = importForm.querySelector('button[data-confirm]');
 			if (mode && mode.value === 'replace' && btn && !window.confirm(btn.getAttribute('data-confirm'))) {
 				e.preventDefault();
@@ -27,10 +27,10 @@
 /* Search-and-pick boxes (excluded pages, record pages). */
 (function () {
 	'use strict';
-	if (typeof window.ailAdmin === 'undefined') {
+	if (typeof window.mtalAdmin === 'undefined') {
 		return;
 	}
-	var cfg = window.ailAdmin;
+	var cfg = window.mtalAdmin;
 
 	function syncCsv(box) {
 		var csv = box.querySelector('.ail-picker-csv');
@@ -98,7 +98,7 @@
 				return;
 			}
 			timer = setTimeout(function () {
-				var url = cfg.ajax + '?action=ail_search&nonce=' + encodeURIComponent(cfg.nonce) +
+				var url = cfg.ajax + '?action=mtal_search&nonce=' + encodeURIComponent(cfg.nonce) +
 					'&kind=' + encodeURIComponent(box.getAttribute('data-kind')) + '&q=' + encodeURIComponent(q);
 				fetch(url, { credentials: 'same-origin' })
 					.then(function (r) { return r.json(); })

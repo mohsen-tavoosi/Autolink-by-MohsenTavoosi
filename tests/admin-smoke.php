@@ -1,11 +1,11 @@
 <?php
 // Usage: php tests/admin-smoke.php
 // Renders the settings screen and runs the search endpoint with small WordPress stand-ins, to catch PHP errors.
-define( 'ABSPATH', __DIR__ . '/' ); define( 'ARRAY_A', 'ARRAY_A' ); define( 'AIL_VERSION', '2.2.0' ); define( 'AIL_PLUGIN_URL', '/' ); define( 'AIL_PLUGIN_FILE', __FILE__ );
-define( 'AIL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/automate-internal-links' ); define( 'AIL_DOCS_WP_URL', 'https://mohsentavoosi.com/wordpress-auto-internal-links' ); define( 'AIL_AUTHOR_URL', 'https://mohsentavoosi.com' );
-define( 'AIL_DIVERSITY_INFO_URL', AIL_DOCS_GENERAL_URL );
+define( 'ABSPATH', __DIR__ . '/' ); define( 'ARRAY_A', 'ARRAY_A' ); define( 'MTAL_VERSION', '2.2.0' ); define( 'MTAL_PLUGIN_URL', '/' ); define( 'MTAL_PLUGIN_FILE', __FILE__ );
+define( 'MTAL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/automate-internal-links' ); define( 'MTAL_DOCS_WP_URL', 'https://mohsentavoosi.com/wordpress-auto-internal-links' ); define( 'MTAL_AUTHOR_URL', 'https://mohsentavoosi.com' );
+define( 'MTAL_DIVERSITY_INFO_URL', MTAL_DOCS_GENERAL_URL );
 error_reporting( E_ALL ); set_error_handler( function ( $n, $s, $f, $l ) { echo "PHPERR [$n] $s at $l\n"; return true; } );
-$GLOBALS['opt'] = array( 'ail_exclude_posts' => array( 21 ), 'ail_exclude_terms' => array( 3 ), 'ail_taxonomies' => array( 'category' ) );
+$GLOBALS['opt'] = array( 'mtal_exclude_posts' => array( 21 ), 'mtal_exclude_terms' => array( 3 ), 'mtal_taxonomies' => array( 'category' ) );
 function get_option( $k, $d = false ) { return array_key_exists( $k, $GLOBALS['opt'] ) ? $GLOBALS['opt'][ $k ] : $d; }
 foreach ( array( '__', 'esc_html__', 'esc_attr__', 'esc_html', 'esc_attr', 'esc_url', 'esc_textarea', 'sanitize_text_field', 'wp_unslash' ) as $f ) { eval( "function $f( \$s ) { return is_string( \$s ) ? \$s : \$s; }" ); }
 function esc_html_e( $s ) { echo $s; } function esc_attr_e( $s ) { echo $s; } function _n( $a, $b, $n ) { return $n == 1 ? $a : $b; }
@@ -23,15 +23,15 @@ function get_post( $id ) { return new WP_Post( $id, 'About us' ); } function get
 function get_posts( $a ) { return array( new WP_Post( 21, 'About us' ), new WP_Post( 22, 'About team' ) ); } function get_terms( $a ) { return array( new WP_Term() ); }
 function check_ajax_referer() { return true; } function wp_send_json_success( $d ) { echo json_encode( $d, JSON_UNESCAPED_UNICODE ), "\n"; throw new Exception( 'sent' ); } function wp_send_json_error() { throw new Exception( 'err' ); }
 class wpdb_stub { public $prefix = 'wp_'; function get_results() { return array(); } } $GLOBALS['wpdb'] = new wpdb_stub();
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-ail-processor.php';
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-ail-settings.php';
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-ail-admin.php';
-ob_start(); AIL_Admin::render_page(); $h = ob_get_clean();
+require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-processor.php';
+require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-settings.php';
+require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-admin.php';
+ob_start(); MTAL_Admin::render_page(); $h = ob_get_clean();
 $checks = array(
-	'diversity tick on by default' => preg_match( '/name="ail_diversity" value="1"\s+checked/', $h ),
-	'unlock tick off by default'   => preg_match( '/name="ail_unlock_capped" value="1" >/', $h ),
-	'short tick off by default'    => preg_match( '/name="ail_short_inside" value="1" >/', $h ),
-	'front page tick on'           => preg_match( '/name="ail_front_page" value="1"\s+checked/', $h ),
+	'diversity tick on by default' => preg_match( '/name="mtal_diversity" value="1"\s+checked/', $h ),
+	'unlock tick off by default'   => preg_match( '/name="mtal_unlock_capped" value="1" >/', $h ),
+	'short tick off by default'    => preg_match( '/name="mtal_short_inside" value="1" >/', $h ),
+	'front page tick on'           => preg_match( '/name="mtal_front_page" value="1"\s+checked/', $h ),
 	'credit line with both guides' => false !== strpos( $h, 'href="https://mohsentavoosi.com/wordpress-auto-internal-links"' ) && false !== strpos( $h, 'class="ail-credit"' ),
 	'info link to tutorial'        => false !== strpos( $h, 'href="https://mohsentavoosi.com/automate-internal-links" target="_blank"' ),
 	'excluded post chip'           => false !== strpos( $h, 'value="p:21"' ) && false !== strpos( $h, 'About us' ),
@@ -40,6 +40,6 @@ $checks = array(
 );
 foreach ( $checks as $k => $v ) { echo ( $v ? 'PASS ' : 'FAIL ' ) . $k . "\n"; }
 $_GET = array( 'q' => 'about', 'kind' => 'all' );
-try { AIL_Admin::ajax_search(); } catch ( Exception $e ) {}
+try { MTAL_Admin::ajax_search(); } catch ( Exception $e ) {}
 $_GET = array( 'q' => 'about', 'kind' => 'posts' );
-try { AIL_Admin::ajax_search(); } catch ( Exception $e ) {}
+try { MTAL_Admin::ajax_search(); } catch ( Exception $e ) {}

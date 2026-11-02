@@ -13,37 +13,75 @@
  * Text Domain:       autolink-by-mohsentavoosi
  * Domain Path:       /languages
  *
- * @package Auto_Internal_Links
+ * @package Autolink_By_MohsenTavoosi
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AIL_VERSION', '2.2.0' );
-define( 'AIL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/automate-internal-links' ); // General rules of automatic internal linking (any platform).
-define( 'AIL_DOCS_WP_URL', 'https://mohsentavoosi.com/wordpress-auto-internal-links' ); // WordPress guide of this plugin.
-define( 'AIL_AUTHOR_URL', 'https://mohsentavoosi.com' );
-define( 'AIL_DIVERSITY_INFO_URL', AIL_DOCS_GENERAL_URL ); // Tutorial page for smart link diversity.
-define( 'AIL_SCHEMA_VERSION', 2 );
-define( 'AIL_PLUGIN_FILE', __FILE__ );
-define( 'AIL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'AIL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'MTAL_VERSION', '2.2.0' );
+define( 'MTAL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/automate-internal-links' ); // General rules of automatic internal linking (any platform).
+define( 'MTAL_DOCS_WP_URL', 'https://mohsentavoosi.com/wordpress-auto-internal-links' ); // WordPress guide of this plugin.
+define( 'MTAL_AUTHOR_URL', 'https://mohsentavoosi.com' );
+define( 'MTAL_DIVERSITY_INFO_URL', MTAL_DOCS_GENERAL_URL ); // Tutorial page for smart link diversity.
+define( 'MTAL_SCHEMA_VERSION', 3 );
+define( 'MTAL_PLUGIN_FILE', __FILE__ );
+define( 'MTAL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'MTAL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-require_once AIL_PLUGIN_DIR . 'includes/class-ail-processor.php';
-require_once AIL_PLUGIN_DIR . 'includes/class-ail-settings.php';
-require_once AIL_PLUGIN_DIR . 'includes/class-ail-elementor.php';
-require_once AIL_PLUGIN_DIR . 'includes/class-ail-hooks.php';
+require_once MTAL_PLUGIN_DIR . 'includes/class-mtal-processor.php';
+require_once MTAL_PLUGIN_DIR . 'includes/class-mtal-settings.php';
+require_once MTAL_PLUGIN_DIR . 'includes/class-mtal-elementor.php';
+require_once MTAL_PLUGIN_DIR . 'includes/class-mtal-hooks.php';
 if ( is_admin() ) {
-	require_once AIL_PLUGIN_DIR . 'includes/class-ail-admin.php';
+	require_once MTAL_PLUGIN_DIR . 'includes/class-mtal-admin.php';
+}
+
+/**
+ * Versions before 2.2.0 were published as "Auto Internal Links" with the prefix "ail_".
+ * Move the old table and options to the new prefix once. Nothing is lost: the table is
+ * renamed (not copied), and an old option is removed only after its value was copied.
+ */
+function mtal_migrate_legacy_prefix() {
+	global $wpdb;
+	$old_table = $wpdb->prefix . 'ail_keywords';
+	$new_table = $wpdb->prefix . 'mtal_keywords';
+	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange
+	$has_old = ( $old_table === $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) ) ) );
+	if ( $has_old ) {
+		$has_new = ( $new_table === $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $new_table ) ) ) );
+		if ( $has_new && 0 === (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$new_table}" ) ) {
+			$wpdb->query( "DROP TABLE {$new_table}" ); // An empty table made by a fresh start. The old one has the data.
+			$has_new = false;
+		}
+		if ( ! $has_new ) {
+			$wpdb->query( "RENAME TABLE {$old_table} TO {$new_table}" );
+		}
+	}
+	// phpcs:enable
+	$keys = array( 'enabled', 'zwnj_as_space', 'post_types', 'taxonomies', 'delete_on_uninstall', 'para_max', 'diversity', 'unlock_capped', 'short_inside', 'front_page', 'exclude_posts', 'exclude_terms' );
+	$none = new stdClass();
+	foreach ( $keys as $key ) {
+		$old = get_option( 'ail_' . $key, $none );
+		if ( $none === $old ) {
+			continue;
+		}
+		$current = get_option( 'mtal_' . $key, $none );
+		if ( $none === $current ) {
+			update_option( 'mtal_' . $key, $old );
+		}
+		delete_option( 'ail_' . $key );
+	}
+	delete_option( 'ail_schema_version' );
 }
 
 /**
  * Create the table. Plain CREATE TABLE IF NOT EXISTS: it never touches an existing table or its rows.
  */
-function ail_create_table() {
+function mtal_create_table() {
 	global $wpdb;
-	$table   = $wpdb->prefix . 'ail_keywords';
+	$table   = $wpdb->prefix . 'mtal_keywords';
 	$charset = $wpdb->get_charset_collate();
 	// phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$wpdb->query(
@@ -61,7 +99,7 @@ function ail_create_table() {
 		) {$charset}"
 	);
 	// phpcs:enable
-	return ail_maybe_migrate( $table );
+	return mtal_maybe_migrate( $table );
 }
 
 /**
@@ -69,7 +107,7 @@ function ail_create_table() {
  * Every step checks first, so running it twice is harmless, and the old column is
  * dropped only after every row has been copied. Returns true when the table is ready.
  */
-function ail_maybe_migrate( $table ) {
+function mtal_maybe_migrate( $table ) {
 	global $wpdb;
 
 	$has = function ( $col ) use ( $wpdb, $table ) {
@@ -107,7 +145,7 @@ function ail_maybe_migrate( $table ) {
 	if ( $left > 0 ) {
 		return false; // Some rows were not copied. Keep the old column.
 	}
-	$global_para = (int) get_option( 'ail_para_max', 0 );
+	$global_para = (int) get_option( 'mtal_para_max', 0 );
 	if ( $global_para > 0 ) {
 		$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET para_max = %d WHERE para_max = 0", $global_para ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
@@ -115,24 +153,25 @@ function ail_maybe_migrate( $table ) {
 		$wpdb->query( "ALTER TABLE {$table} DROP INDEX keyword_idx" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 	$wpdb->query( "ALTER TABLE {$table} DROP COLUMN keyword" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	delete_option( 'ail_para_max' );
+	delete_option( 'mtal_para_max' );
 	return true;
 }
 
-register_activation_hook( __FILE__, 'ail_activate' );
-function ail_activate() {
-	$ready = ail_create_table();
-	add_option( 'ail_enabled', 1 );
-	add_option( 'ail_zwnj_as_space', 1 );
-	add_option( 'ail_diversity', 1 );
-	add_option( 'ail_front_page', 1 );
+register_activation_hook( __FILE__, 'mtal_activate' );
+function mtal_activate() {
+	mtal_migrate_legacy_prefix();
+	$ready = mtal_create_table();
+	add_option( 'mtal_enabled', 1 );
+	add_option( 'mtal_zwnj_as_space', 1 );
+	add_option( 'mtal_diversity', 1 );
+	add_option( 'mtal_front_page', 1 );
 	if ( $ready ) {
-		update_option( 'ail_schema_version', AIL_SCHEMA_VERSION );
+		update_option( 'mtal_schema_version', MTAL_SCHEMA_VERSION );
 	}
 }
 
-register_deactivation_hook( __FILE__, 'ail_deactivate' );
-function ail_deactivate() {
+register_deactivation_hook( __FILE__, 'mtal_deactivate' );
+function mtal_deactivate() {
 	// Nothing to clean. Links exist only in the page output, so they disappear by themselves.
 }
 
@@ -140,22 +179,23 @@ function ail_deactivate() {
  * A plugin updated by replacing its files does not run the activation hook,
  * so the table and defaults are checked once per schema version.
  */
-add_action( 'plugins_loaded', 'ail_boot' );
-function ail_boot() {
+add_action( 'plugins_loaded', 'mtal_boot' );
+function mtal_boot() {
 	load_plugin_textdomain( 'autolink-by-mohsentavoosi', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
-	if ( (int) get_option( 'ail_schema_version', 0 ) < AIL_SCHEMA_VERSION ) {
-		$ready = ail_create_table();
-		add_option( 'ail_zwnj_as_space', 1 );
+	if ( (int) get_option( 'mtal_schema_version', 0 ) < MTAL_SCHEMA_VERSION ) {
+		mtal_migrate_legacy_prefix(); // Before the table is created, so the old rows move first.
+		$ready = mtal_create_table();
+		add_option( 'mtal_zwnj_as_space', 1 );
 		if ( $ready ) {
-			update_option( 'ail_schema_version', AIL_SCHEMA_VERSION ); // Not saved when the migration stopped, so it retries.
+			update_option( 'mtal_schema_version', MTAL_SCHEMA_VERSION ); // Not saved when the migration stopped, so it retries.
 		}
 	}
 	if ( is_admin() ) {
-		AIL_Admin::init();
+		MTAL_Admin::init();
 	}
 }
 
 // Hooks that change the output are registered after all post types and taxonomies exist.
-add_action( 'init', array( 'AIL_Hooks', 'init' ), 20 );
-add_action( 'init', array( 'AIL_Elementor', 'init' ), 20 );
+add_action( 'init', array( 'MTAL_Hooks', 'init' ), 20 );
+add_action( 'init', array( 'MTAL_Elementor', 'init' ), 20 );
