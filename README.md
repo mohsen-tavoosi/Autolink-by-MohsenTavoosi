@@ -4,8 +4,8 @@ WordPress plugin that adds internal links to your keywords **while the page is s
 
 By [Mohsen Tavoosi](https://mohsentavoosi.com).
 
-- General rules of automatic internal linking (any site, any platform): https://mohsentavoosi.com/p/automate-internal-links
-- WordPress guide for this plugin: https://mohsentavoosi.com/p/wordpress-auto-internal-links
+- General rules of automatic internal linking (any site, any platform): https://mohsentavoosi.com/en/p-en/automate-internal-links-en/
+- WordPress guide for this plugin: https://mohsentavoosi.com/en/p-en/wordpress-auto-internal-links-en/
 - Drafts of the pages for the author's site (Persian): [docs/site](docs/site)
 - Persian documentation in this repo: [docs/DOCUMENTATION.fa.md](docs/DOCUMENTATION.fa.md)
 
