@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping. Documentation: https://mohsentavoosi.com/wordpress-auto-internal-links (general rules: https://mohsentavoosi.com/automate-internal-links)
+Thanks for helping. Documentation: https://mohsentavoosi.com/p/wordpress-auto-internal-links (general rules: https://mohsentavoosi.com/p/automate-internal-links)
 
 1. Open an issue first for anything bigger than a small fix.
 2. Fork, create a branch, keep one change per pull request.

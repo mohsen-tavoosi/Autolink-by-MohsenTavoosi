@@ -2,7 +2,7 @@
 // Usage: php tests/admin-smoke.php
 // Renders the settings screen and runs the search endpoint with small WordPress stand-ins, to catch PHP errors.
 define( 'ABSPATH', __DIR__ . '/' ); define( 'ARRAY_A', 'ARRAY_A' ); define( 'MTAL_VERSION', '2.2.2' ); define( 'MTAL_PLUGIN_URL', '/' ); define( 'MTAL_PLUGIN_FILE', __FILE__ );
-define( 'MTAL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/automate-internal-links' ); define( 'MTAL_DOCS_WP_URL', 'https://mohsentavoosi.com/wordpress-auto-internal-links' ); define( 'MTAL_AUTHOR_URL', 'https://mohsentavoosi.com' );
+define( 'MTAL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/p/automate-internal-links' ); define( 'MTAL_DOCS_WP_URL', 'https://mohsentavoosi.com/p/wordpress-auto-internal-links' ); define( 'MTAL_AUTHOR_URL', 'https://mohsentavoosi.com' );
 define( 'MTAL_DIVERSITY_INFO_URL', MTAL_DOCS_GENERAL_URL );
 error_reporting( E_ALL ); set_error_handler( function ( $n, $s, $f, $l ) { echo "PHPERR [$n] $s at $l\n"; return true; } );
 $GLOBALS['opt'] = array( 'mtal_exclude_posts' => array( 21 ), 'mtal_exclude_terms' => array( 3 ), 'mtal_taxonomies' => array( 'category' ) );
@@ -32,8 +32,8 @@ $checks = array(
 	'unlock tick off by default'   => preg_match( '/name="mtal_unlock_capped" value="1" >/', $h ),
 	'short tick off by default'    => preg_match( '/name="mtal_short_inside" value="1" >/', $h ),
 	'front page tick on'           => preg_match( '/name="mtal_front_page" value="1"\s+checked/', $h ),
-	'credit line with both guides' => false !== strpos( $h, 'href="https://mohsentavoosi.com/wordpress-auto-internal-links"' ) && false !== strpos( $h, 'class="ail-credit"' ),
-	'info link to tutorial'        => false !== strpos( $h, 'href="https://mohsentavoosi.com/automate-internal-links" target="_blank"' ),
+	'credit line with both guides' => false !== strpos( $h, 'href="https://mohsentavoosi.com/p/wordpress-auto-internal-links"' ) && false !== strpos( $h, 'class="ail-credit"' ),
+	'info link to tutorial'        => false !== strpos( $h, 'href="https://mohsentavoosi.com/p/automate-internal-links" target="_blank"' ),
 	'excluded post chip'           => false !== strpos( $h, 'value="p:21"' ) && false !== strpos( $h, 'About us' ),
 	'excluded term chip'           => false !== strpos( $h, 'value="t:3"' ),
 	'every new tick has a description' => false !== strpos( $h, 'On (recommended): inside each record' ) && false !== strpos( $h, 'Off (default): a longer keyword always keeps its place' ) && false !== strpos( $h, 'Off (default): a shorter keyword gets a link only' ) && false !== strpos( $h, 'Off: the home page of the site' ) && false !== strpos( $h, 'These never get automatic links' ),

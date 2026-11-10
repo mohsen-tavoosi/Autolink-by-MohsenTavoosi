@@ -14,8 +14,8 @@ Mohsen Tavoosi's automatic internal links. Adds links to your keywords while the
 
 [Mohsen Tavoosi](https://mohsentavoosi.com), an SEO practitioner since 2012, built MT Smart Link Automation from his teaching on automatic internal linking. The rules inside it (longest keyword first, limits per page and paragraph, keyword order) are the ones he teaches.
 
-* [General rules of automatic internal linking](https://mohsentavoosi.com/automate-internal-links) - the principles for any site and platform.
-* [WordPress guide](https://mohsentavoosi.com/wordpress-auto-internal-links) - how to set up and use this plugin.
+* [General rules of automatic internal linking](https://mohsentavoosi.com/p/automate-internal-links) - the principles for any site and platform.
+* [WordPress guide](https://mohsentavoosi.com/p/wordpress-auto-internal-links) - how to set up and use this plugin.
 
 You list the keywords and the page each group should link to. The plugin adds the links when a page is rendered. Nothing is saved into your posts, so you can turn it off at any time and every link disappears.
 
@@ -46,8 +46,8 @@ You list the keywords and the page each group should link to. The plugin adds th
 
 == Documentation ==
 
-* General rules: https://mohsentavoosi.com/automate-internal-links
-* WordPress guide: https://mohsentavoosi.com/wordpress-auto-internal-links
+* General rules: https://mohsentavoosi.com/p/automate-internal-links
+* WordPress guide: https://mohsentavoosi.com/p/wordpress-auto-internal-links
 
 == Frequently Asked Questions ==
 

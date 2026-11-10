@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       MT Smart Link Automation
- * Plugin URI:        https://mohsentavoosi.com/wordpress-auto-internal-links
+ * Plugin URI:        https://mohsentavoosi.com/p/wordpress-auto-internal-links
  * Description:       Mohsen Tavoosi's automatic internal links. Adds links to your keywords while the page is shown. Never changes your posts or the database content. Works with Elementor, the block editor, WooCommerce and term descriptions.
  * Version:           2.2.2
  * Requires at least: 5.8
@@ -25,8 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'MTAL_VERSION', '2.2.2' );
-define( 'MTAL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/automate-internal-links' ); // General rules of automatic internal linking (any platform).
-define( 'MTAL_DOCS_WP_URL', 'https://mohsentavoosi.com/wordpress-auto-internal-links' ); // WordPress guide of this plugin.
+define( 'MTAL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/p/automate-internal-links' ); // General rules of automatic internal linking (any platform).
+define( 'MTAL_DOCS_WP_URL', 'https://mohsentavoosi.com/p/wordpress-auto-internal-links' ); // WordPress guide of this plugin.
 define( 'MTAL_AUTHOR_URL', 'https://mohsentavoosi.com' );
 define( 'MTAL_DIVERSITY_INFO_URL', MTAL_DOCS_GENERAL_URL ); // Tutorial page for smart link diversity.
 define( 'MTAL_SCHEMA_VERSION', 3 );
