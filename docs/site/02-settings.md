@@ -3,7 +3,7 @@ slug: wordpress-auto-internal-links/settings
 parent: wordpress-auto-internal-links
 seo_title: مرجع تنظیمات افزونه لینک سازی داخلی وردپرس - Mohsen Tavoosi
 h1: مرجع همه تنظیمات افزونه لینک سازی داخلی خودکار
-meta_description: هر تیک و هر گزینه افزونه Autolink by MohsenTavoosi چکار می کنه، پیش فرضش چیه و کی باید عوضش کنید.
+meta_description: هر تیک و هر گزینه افزونه MT Smart Link Automation چکار می کنه، پیش فرضش چیه و کی باید عوضش کنید.
 status: پیش نویس. قبل از انتشار با دانش به روز محسن آپدیت شود.
 ---
 

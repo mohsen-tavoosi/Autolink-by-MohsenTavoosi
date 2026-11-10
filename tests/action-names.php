@@ -3,10 +3,10 @@
  * Consistency check: every form action and AJAX action used by the admin screen has a registered hook,
  * and every nonce that is checked is also created. Runs without WordPress.
  *
- * @package Autolink_By_MohsenTavoosi
+ * @package MT_Smart_Link_Automation
  */
 
-$root  = dirname( __DIR__ ) . '/autolink-by-mohsentavoosi';
+$root  = dirname( __DIR__ ) . '/mt-smart-link-automation';
 $admin = file_get_contents( $root . '/includes/class-mtal-admin.php' );
 $js    = file_get_contents( $root . '/assets/js/admin.js' );
 

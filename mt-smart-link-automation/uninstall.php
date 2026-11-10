@@ -3,7 +3,7 @@
  * Runs when the plugin is deleted from the Plugins screen.
  * Data is removed only if "Delete all plugin data when the plugin is deleted" was ticked.
  *
- * @package Autolink_By_MohsenTavoosi
+ * @package MT_Smart_Link_Automation
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {

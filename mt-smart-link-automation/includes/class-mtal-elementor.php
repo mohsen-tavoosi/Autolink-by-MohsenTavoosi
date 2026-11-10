@@ -5,7 +5,7 @@
  * Elementor renders widgets itself, so each widget's HTML is processed on
  * elementor/widget/render_content (priority 99). All widgets of one page share one counter (R15).
  *
- * @package Autolink_By_MohsenTavoosi
+ * @package MT_Smart_Link_Automation
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

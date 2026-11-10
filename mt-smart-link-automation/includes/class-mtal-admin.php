@@ -2,7 +2,7 @@
 /**
  * Admin screen: settings, records, import and export.
  *
- * @package Autolink_By_MohsenTavoosi
+ * @package MT_Smart_Link_Automation
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -31,22 +31,22 @@ class MTAL_Admin {
 		if ( plugin_basename( MTAL_PLUGIN_FILE ) !== $file ) {
 			return $links;
 		}
-		$links[] = '<a href="' . esc_url( MTAL_DOCS_WP_URL ) . '" target="_blank" rel="noopener">' . esc_html__( 'WordPress guide', 'autolink-by-mohsentavoosi' ) . '</a>';
-		$links[] = '<a href="' . esc_url( MTAL_DOCS_GENERAL_URL ) . '" target="_blank" rel="noopener">' . esc_html__( 'General rules', 'autolink-by-mohsentavoosi' ) . '</a>';
+		$links[] = '<a href="' . esc_url( MTAL_DOCS_WP_URL ) . '" target="_blank" rel="noopener">' . esc_html__( 'WordPress guide', 'mt-smart-link-automation' ) . '</a>';
+		$links[] = '<a href="' . esc_url( MTAL_DOCS_GENERAL_URL ) . '" target="_blank" rel="noopener">' . esc_html__( 'General rules', 'mt-smart-link-automation' ) . '</a>';
 		return $links;
 	}
 
 	public static function action_links( $links ) {
-		array_unshift( $links, '<a href="' . esc_url( self::page_url() ) . '">' . esc_html__( 'Settings', 'autolink-by-mohsentavoosi' ) . '</a>' );
+		array_unshift( $links, '<a href="' . esc_url( self::page_url() ) . '">' . esc_html__( 'Settings', 'mt-smart-link-automation' ) . '</a>' );
 		return $links;
 	}
 
 	public static function add_menu() {
 		add_menu_page(
-			__( 'Autolink by MohsenTavoosi', 'autolink-by-mohsentavoosi' ),
-			__( 'Internal Links', 'autolink-by-mohsentavoosi' ),
+			__( 'MT Smart Link Automation', 'mt-smart-link-automation' ),
+			__( 'Internal Links', 'mt-smart-link-automation' ),
 			'manage_options',
-			'autolink-by-mohsentavoosi',
+			'mt-smart-link-automation',
 			array( __CLASS__, 'render_page' ),
 			'dashicons-admin-links',
 			80
@@ -54,7 +54,7 @@ class MTAL_Admin {
 	}
 
 	public static function enqueue_assets( $hook ) {
-		if ( 'toplevel_page_autolink-by-mohsentavoosi' !== $hook ) {
+		if ( 'toplevel_page_mt-smart-link-automation' !== $hook ) {
 			return;
 		}
 		wp_enqueue_style( 'ail-admin', MTAL_PLUGIN_URL . 'assets/css/admin.css', array(), MTAL_VERSION );
@@ -65,8 +65,8 @@ class MTAL_Admin {
 			array(
 				'ajax'      => admin_url( 'admin-ajax.php' ),
 				'nonce'     => wp_create_nonce( 'mtal_search' ),
-				'noResults' => __( 'Nothing found.', 'autolink-by-mohsentavoosi' ),
-				'remove'    => __( 'Remove', 'autolink-by-mohsentavoosi' ),
+				'noResults' => __( 'Nothing found.', 'mt-smart-link-automation' ),
+				'remove'    => __( 'Remove', 'mt-smart-link-automation' ),
 			)
 		);
 	}
@@ -75,7 +75,7 @@ class MTAL_Admin {
 
 	public static function handle_save_settings() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Unauthorized', 'autolink-by-mohsentavoosi' ), 403 );
+			wp_die( esc_html__( 'Unauthorized', 'mt-smart-link-automation' ), 403 );
 		}
 		check_admin_referer( 'mtal_settings_save' );
 
@@ -102,7 +102,7 @@ class MTAL_Admin {
 
 	public static function handle_save_keyword() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Unauthorized', 'autolink-by-mohsentavoosi' ), 403 );
+			wp_die( esc_html__( 'Unauthorized', 'mt-smart-link-automation' ), 403 );
 		}
 		check_admin_referer( 'mtal_keyword_save' );
 
@@ -177,7 +177,7 @@ class MTAL_Admin {
 
 	public static function handle_delete_keyword() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Unauthorized', 'autolink-by-mohsentavoosi' ), 403 );
+			wp_die( esc_html__( 'Unauthorized', 'mt-smart-link-automation' ), 403 );
 		}
 		check_admin_referer( 'mtal_delete_keyword' );
 
@@ -194,7 +194,7 @@ class MTAL_Admin {
 
 	public static function handle_export() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Unauthorized', 'autolink-by-mohsentavoosi' ), 403 );
+			wp_die( esc_html__( 'Unauthorized', 'mt-smart-link-automation' ), 403 );
 		}
 		check_admin_referer( 'mtal_export' );
 
@@ -211,7 +211,7 @@ class MTAL_Admin {
 		unset( $row );
 
 		$export = array(
-			'plugin'      => 'autolink-by-mohsentavoosi',
+			'plugin'      => 'mt-smart-link-automation',
 			'version'     => MTAL_VERSION,
 			'exported_at' => gmdate( 'Y-m-d H:i:s' ),
 			'settings'    => array(
@@ -232,7 +232,7 @@ class MTAL_Admin {
 		$json = wp_json_encode( $export, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
 		nocache_headers();
 		header( 'Content-Type: application/json; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename="autolink-export-' . gmdate( 'Y-m-d-His' ) . '.json"' );
+		header( 'Content-Disposition: attachment; filename="mt-smart-link-automation-export-' . gmdate( 'Y-m-d-His' ) . '.json"' );
 		header( 'Content-Length: ' . strlen( $json ) );
 		echo $json; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON download.
 		exit;
@@ -242,7 +242,7 @@ class MTAL_Admin {
 
 	public static function handle_import() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Unauthorized', 'autolink-by-mohsentavoosi' ), 403 );
+			wp_die( esc_html__( 'Unauthorized', 'mt-smart-link-automation' ), 403 );
 		}
 		check_admin_referer( 'mtal_import' );
 
@@ -256,7 +256,7 @@ class MTAL_Admin {
 		}
 
 		$data = json_decode( (string) file_get_contents( $tmp ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		if ( ! is_array( $data ) || empty( $data['records'] ) || ! is_array( $data['records'] ) || ! in_array( isset( $data['plugin'] ) ? $data['plugin'] : '', array( 'autolink-by-mohsentavoosi', 'auto-internal-links' ), true ) ) {
+		if ( ! is_array( $data ) || empty( $data['records'] ) || ! is_array( $data['records'] ) || ! in_array( isset( $data['plugin'] ) ? $data['plugin'] : '', array( 'mt-smart-link-automation', 'autolink-by-mohsentavoosi', 'auto-internal-links' ), true ) ) {
 			self::redirect( 'import_invalid' );
 		}
 
@@ -398,7 +398,7 @@ class MTAL_Admin {
 	}
 
 	private static function page_url( array $extra = array() ) {
-		return add_query_arg( array_merge( array( 'page' => 'autolink-by-mohsentavoosi' ), $extra ), admin_url( 'admin.php' ) );
+		return add_query_arg( array_merge( array( 'page' => 'mt-smart-link-automation' ), $extra ), admin_url( 'admin.php' ) );
 	}
 
 	private static function get_records() {
@@ -544,16 +544,16 @@ class MTAL_Admin {
 			$p = get_post( $id );
 			if ( ! $p ) {
 				/* translators: %d: post ID */
-				return sprintf( __( 'Deleted item #%d', 'autolink-by-mohsentavoosi' ), $id );
+				return sprintf( __( 'Deleted item #%d', 'mt-smart-link-automation' ), $id );
 			}
 			$obj   = get_post_type_object( $p->post_type );
-			$title = '' !== $p->post_title ? $p->post_title : __( '(no title)', 'autolink-by-mohsentavoosi' );
+			$title = '' !== $p->post_title ? $p->post_title : __( '(no title)', 'mt-smart-link-automation' );
 			return sprintf( '%s — %s #%d', $title, $obj ? $obj->labels->singular_name : $p->post_type, $id );
 		}
 		$t = get_term( $id );
 		if ( ! ( $t instanceof WP_Term ) ) {
 			/* translators: %d: term ID */
-			return sprintf( __( 'Deleted term #%d', 'autolink-by-mohsentavoosi' ), $id );
+			return sprintf( __( 'Deleted term #%d', 'mt-smart-link-automation' ), $id );
 		}
 		$tax = get_taxonomy( $t->taxonomy );
 		return sprintf( '%s — %s #%d', $t->name, $tax ? $tax->labels->singular_name : $t->taxonomy, $id );
@@ -570,13 +570,13 @@ class MTAL_Admin {
 	private static function picker( $name, $kind, array $picked, $mode = 'list' ) {
 		?>
 		<div class="ail-picker" data-name="<?php echo esc_attr( $name ); ?>" data-kind="<?php echo esc_attr( $kind ); ?>" data-mode="<?php echo esc_attr( $mode ); ?>">
-			<input type="search" class="regular-text ail-picker-search" placeholder="<?php echo esc_attr( 'posts' === $kind ? __( 'Search posts and pages by title or ID…', 'autolink-by-mohsentavoosi' ) : __( 'Search posts, pages and terms by title or ID…', 'autolink-by-mohsentavoosi' ) ); ?>" autocomplete="off">
+			<input type="search" class="regular-text ail-picker-search" placeholder="<?php echo esc_attr( 'posts' === $kind ? __( 'Search posts and pages by title or ID…', 'mt-smart-link-automation' ) : __( 'Search posts, pages and terms by title or ID…', 'mt-smart-link-automation' ) ); ?>" autocomplete="off">
 			<ul class="ail-picker-results" hidden></ul>
 			<ul class="ail-picker-chips">
 				<?php foreach ( $picked as $it ) : ?>
 					<li class="ail-chip" data-value="<?php echo esc_attr( $it[0] . ':' . $it[1] ); ?>">
 						<span><?php echo esc_html( self::pick_label( $it[0], $it[1] ) ); ?></span>
-						<button type="button" class="ail-chip-x" aria-label="<?php esc_attr_e( 'Remove', 'autolink-by-mohsentavoosi' ); ?>">×</button>
+						<button type="button" class="ail-chip-x" aria-label="<?php esc_attr_e( 'Remove', 'mt-smart-link-automation' ); ?>">×</button>
 						<?php if ( 'list' === $mode ) : ?>
 							<input type="hidden" name="<?php echo esc_attr( $name ); ?>[]" value="<?php echo esc_attr( $it[0] . ':' . $it[1] ); ?>">
 						<?php endif; ?>
@@ -629,34 +629,34 @@ class MTAL_Admin {
 		$saved_taxes = MTAL_Settings::taxonomies();
 		?>
 		<div class="wrap ail-wrap">
-			<h1>🔗 <?php esc_html_e( 'Autolink by MohsenTavoosi', 'autolink-by-mohsentavoosi' ); ?></h1>
+			<h1>🔗 <?php esc_html_e( 'MT Smart Link Automation', 'mt-smart-link-automation' ); ?></h1>
 
 			<?php
 			$notices = array(
-				'settings_saved' => array( 'success', __( 'Settings saved.', 'autolink-by-mohsentavoosi' ) ),
-				'kw_saved'       => array( 'success', __( 'Record saved.', 'autolink-by-mohsentavoosi' ) ),
-				'kw_deleted'     => array( 'success', __( 'Record deleted.', 'autolink-by-mohsentavoosi' ) ),
-				'kw_error'       => array( 'error', __( 'Error: Keywords and URL cannot be empty.', 'autolink-by-mohsentavoosi' ) ),
-				'kw_too_many'    => array( 'error', sprintf( /* translators: %d: maximum keywords per record */ __( 'Error: Maximum %d keywords per record.', 'autolink-by-mohsentavoosi' ), self::MAX_KEYWORDS ) ),
-				'bad_url'        => array( 'error', __( 'Error: The link URL must start with http://, https:// or a single slash (for example /my-page).', 'autolink-by-mohsentavoosi' ) ),
-				'dup_url'        => array( 'error', __( 'Error: This URL is already registered in another record. Each URL can only be used once.', 'autolink-by-mohsentavoosi' ) ),
-				'import_no_file' => array( 'error', __( 'Error: No file selected for import.', 'autolink-by-mohsentavoosi' ) ),
-				'import_too_big' => array( 'error', __( 'Error: The import file is larger than 1 MB.', 'autolink-by-mohsentavoosi' ) ),
-				'import_invalid' => array( 'error', __( 'Error: Invalid import file. Please use a JSON file exported by this plugin. Nothing was changed.', 'autolink-by-mohsentavoosi' ) ),
+				'settings_saved' => array( 'success', __( 'Settings saved.', 'mt-smart-link-automation' ) ),
+				'kw_saved'       => array( 'success', __( 'Record saved.', 'mt-smart-link-automation' ) ),
+				'kw_deleted'     => array( 'success', __( 'Record deleted.', 'mt-smart-link-automation' ) ),
+				'kw_error'       => array( 'error', __( 'Error: Keywords and URL cannot be empty.', 'mt-smart-link-automation' ) ),
+				'kw_too_many'    => array( 'error', sprintf( /* translators: %d: maximum keywords per record */ __( 'Error: Maximum %d keywords per record.', 'mt-smart-link-automation' ), self::MAX_KEYWORDS ) ),
+				'bad_url'        => array( 'error', __( 'Error: The link URL must start with http://, https:// or a single slash (for example /my-page).', 'mt-smart-link-automation' ) ),
+				'dup_url'        => array( 'error', __( 'Error: This URL is already registered in another record. Each URL can only be used once.', 'mt-smart-link-automation' ) ),
+				'import_no_file' => array( 'error', __( 'Error: No file selected for import.', 'mt-smart-link-automation' ) ),
+				'import_too_big' => array( 'error', __( 'Error: The import file is larger than 1 MB.', 'mt-smart-link-automation' ) ),
+				'import_invalid' => array( 'error', __( 'Error: Invalid import file. Please use a JSON file exported by this plugin. Nothing was changed.', 'mt-smart-link-automation' ) ),
 			);
 			if ( isset( $notices[ $msg ] ) ) {
 				printf( '<div class="notice notice-%1$s is-dismissible"><p>%2$s</p></div>', esc_attr( $notices[ $msg ][0] ), esc_html( ( 'success' === $notices[ $msg ][0] ? '✓ ' : '' ) . $notices[ $msg ][1] ) );
 			} elseif ( 'dup_keyword' === $msg ) {
 				echo '<div class="notice notice-error is-dismissible"><p>' . sprintf(
 					/* translators: 1: keyword, 2: record number */
-					esc_html__( 'Error: The keyword "%1$s" already exists in record #%2$d. Each keyword must be unique across all records.', 'autolink-by-mohsentavoosi' ),
+					esc_html__( 'Error: The keyword "%1$s" already exists in record #%2$d. Each keyword must be unique across all records.', 'mt-smart-link-automation' ),
 					'<strong>' . esc_html( $dup_kw ) . '</strong>',
 					(int) $dup_rec
 				) . '</p></div>';
 			} elseif ( 'import_done' === $msg ) {
 				echo '<div class="notice notice-success is-dismissible"><p>✓ ' . sprintf(
 					/* translators: 1: imported count, 2: invalid, 3: duplicate URL, 4: duplicate keyword */
-					esc_html__( 'Import complete. %1$d records imported. Skipped: %2$d invalid, %3$d duplicate URL, %4$d duplicate keyword.', 'autolink-by-mohsentavoosi' ),
+					esc_html__( 'Import complete. %1$d records imported. Skipped: %2$d invalid, %3$d duplicate URL, %4$d duplicate keyword.', 'mt-smart-link-automation' ),
 					(int) $imp_count,
 					(int) $sk_inv,
 					(int) $sk_url,
@@ -666,56 +666,56 @@ class MTAL_Admin {
 			?>
 
 			<div class="ail-card">
-				<h2><?php esc_html_e( 'General Settings', 'autolink-by-mohsentavoosi' ); ?></h2>
+				<h2><?php esc_html_e( 'General Settings', 'mt-smart-link-automation' ); ?></h2>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 					<input type="hidden" name="action" value="mtal_save_settings">
 					<?php wp_nonce_field( 'mtal_settings_save' ); ?>
 					<table class="form-table">
 						<tr>
-							<th><?php esc_html_e( 'Plugin status', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th><?php esc_html_e( 'Plugin status', 'mt-smart-link-automation' ); ?></th>
 							<td>
-								<label><input type="checkbox" name="mtal_enabled" value="1" <?php checked( $enabled ); ?>> <?php esc_html_e( 'Enabled', 'autolink-by-mohsentavoosi' ); ?></label>
-								<p class="description"><?php esc_html_e( 'Turn off to remove every link from the pages without deactivating the plugin. Your records are kept.', 'autolink-by-mohsentavoosi' ); ?></p>
+								<label><input type="checkbox" name="mtal_enabled" value="1" <?php checked( $enabled ); ?>> <?php esc_html_e( 'Enabled', 'mt-smart-link-automation' ); ?></label>
+								<p class="description"><?php esc_html_e( 'Turn off to remove every link from the pages without deactivating the plugin. Your records are kept.', 'mt-smart-link-automation' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'Half-space (ZWNJ)', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th><?php esc_html_e( 'Half-space (ZWNJ)', 'mt-smart-link-automation' ); ?></th>
 							<td>
-								<label><input type="checkbox" name="mtal_zwnj_as_space" value="1" <?php checked( $zwnj ); ?>> <?php esc_html_e( 'Treat half-space (ZWNJ) as a space', 'autolink-by-mohsentavoosi' ); ?></label>
-								<p class="description"><?php esc_html_e( 'On: a keyword written with a space and the same words joined by a half-space are the same keyword, in your keywords and in the page text. You only need one version of each keyword. Turn it off for languages where a half-space and a space mean different things. A half-space at the edge of a word still stops a partial match.', 'autolink-by-mohsentavoosi' ); ?></p>
+								<label><input type="checkbox" name="mtal_zwnj_as_space" value="1" <?php checked( $zwnj ); ?>> <?php esc_html_e( 'Treat half-space (ZWNJ) as a space', 'mt-smart-link-automation' ); ?></label>
+								<p class="description"><?php esc_html_e( 'On: a keyword written with a space and the same words joined by a half-space are the same keyword, in your keywords and in the page text. You only need one version of each keyword. Turn it off for languages where a half-space and a space mean different things. A half-space at the edge of a word still stops a partial match.', 'mt-smart-link-automation' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'Keyword order', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th><?php esc_html_e( 'Keyword order', 'mt-smart-link-automation' ); ?></th>
 							<td>
-								<label><input type="checkbox" name="mtal_diversity" value="1" <?php checked( MTAL_Settings::diversity() ); ?>> <?php esc_html_e( 'Smart link diversity order by keywords per link based on Mohsen Tavoosi tutorial', 'autolink-by-mohsentavoosi' ); ?></label>
-								<a href="<?php echo esc_url( MTAL_DIVERSITY_INFO_URL ); ?>" target="_blank" rel="noopener" class="ail-info" title="<?php esc_attr_e( 'Read the tutorial', 'autolink-by-mohsentavoosi' ); ?>">ⓘ</a>
-								<p class="description"><?php esc_html_e( 'On (recommended): inside each record, the first link on a page goes to keyword 1 (the first line), the next link to the first keyword that has no link on this page yet, and so on up to keyword 20. When every keyword found on the page has a link, it starts again from keyword 1. This spreads your links over all the keywords of a record instead of always linking the same words. Off: the order of keywords does not matter. The first match in the text gets the link, within the limits.', 'autolink-by-mohsentavoosi' ); ?></p>
+								<label><input type="checkbox" name="mtal_diversity" value="1" <?php checked( MTAL_Settings::diversity() ); ?>> <?php esc_html_e( 'Smart link diversity order by keywords per link based on Mohsen Tavoosi tutorial', 'mt-smart-link-automation' ); ?></label>
+								<a href="<?php echo esc_url( MTAL_DIVERSITY_INFO_URL ); ?>" target="_blank" rel="noopener" class="ail-info" title="<?php esc_attr_e( 'Read the tutorial', 'mt-smart-link-automation' ); ?>">ⓘ</a>
+								<p class="description"><?php esc_html_e( 'On (recommended): inside each record, the first link on a page goes to keyword 1 (the first line), the next link to the first keyword that has no link on this page yet, and so on up to keyword 20. When every keyword found on the page has a link, it starts again from keyword 1. This spreads your links over all the keywords of a record instead of always linking the same words. Off: the order of keywords does not matter. The first match in the text gets the link, within the limits.', 'mt-smart-link-automation' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'Long phrases at their limit', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th><?php esc_html_e( 'Long phrases at their limit', 'mt-smart-link-automation' ); ?></th>
 							<td>
-								<label><input type="checkbox" name="mtal_unlock_capped" value="1" <?php checked( MTAL_Settings::unlock_capped() ); ?>> <?php esc_html_e( 'Unlock longer phrases after their page limit: let shorter phrases inside them get linked', 'autolink-by-mohsentavoosi' ); ?></label>
-								<p class="description"><?php esc_html_e( 'Off (default): a longer keyword always keeps its place, even when it already reached its limit and gets no link there. A shorter keyword is never linked inside it. Example: "buy automatic door" reached its limit, so in the next "buy automatic door" the words "automatic door" are not linked either. On: once the longer keyword reached its limit, the shorter keyword inside it can be linked, within its own limits.', 'autolink-by-mohsentavoosi' ); ?></p>
+								<label><input type="checkbox" name="mtal_unlock_capped" value="1" <?php checked( MTAL_Settings::unlock_capped() ); ?>> <?php esc_html_e( 'Unlock longer phrases after their page limit: let shorter phrases inside them get linked', 'mt-smart-link-automation' ); ?></label>
+								<p class="description"><?php esc_html_e( 'Off (default): a longer keyword always keeps its place, even when it already reached its limit and gets no link there. A shorter keyword is never linked inside it. Example: "buy automatic door" reached its limit, so in the next "buy automatic door" the words "automatic door" are not linked either. On: once the longer keyword reached its limit, the shorter keyword inside it can be linked, within its own limits.', 'mt-smart-link-automation' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'Short phrase without a link', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th><?php esc_html_e( 'Short phrase without a link', 'mt-smart-link-automation' ); ?></th>
 							<td>
-								<label><input type="checkbox" name="mtal_short_inside" value="1" <?php checked( MTAL_Settings::short_inside() ); ?>> <?php esc_html_e( 'Link a shorter phrase inside a longer matched phrase if the shorter phrase has not been linked yet on this page', 'autolink-by-mohsentavoosi' ); ?></label>
-								<p class="description"><?php esc_html_e( 'Off (default): a shorter keyword gets a link only where it appears on its own. On: if a shorter keyword has no link anywhere on the page, it is linked once inside a longer keyword that did not get a link there (a link can never sit inside another link). After that one link the longer keyword keeps its place again.', 'autolink-by-mohsentavoosi' ); ?></p>
+								<label><input type="checkbox" name="mtal_short_inside" value="1" <?php checked( MTAL_Settings::short_inside() ); ?>> <?php esc_html_e( 'Link a shorter phrase inside a longer matched phrase if the shorter phrase has not been linked yet on this page', 'mt-smart-link-automation' ); ?></label>
+								<p class="description"><?php esc_html_e( 'Off (default): a shorter keyword gets a link only where it appears on its own. On: if a shorter keyword has no link anywhere on the page, it is linked once inside a longer keyword that did not get a link there (a link can never sit inside another link). After that one link the longer keyword keeps its place again.', 'mt-smart-link-automation' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'Front page', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th><?php esc_html_e( 'Front page', 'mt-smart-link-automation' ); ?></th>
 							<td>
-								<label><input type="checkbox" name="mtal_front_page" value="1" <?php checked( MTAL_Settings::front_page() ); ?>> <?php esc_html_e( 'Add links on the front page', 'autolink-by-mohsentavoosi' ); ?></label>
-								<p class="description"><?php esc_html_e( 'Off: the home page of the site never gets automatic links, whatever its post type.', 'autolink-by-mohsentavoosi' ); ?></p>
+								<label><input type="checkbox" name="mtal_front_page" value="1" <?php checked( MTAL_Settings::front_page() ); ?>> <?php esc_html_e( 'Add links on the front page', 'mt-smart-link-automation' ); ?></label>
+								<p class="description"><?php esc_html_e( 'Off: the home page of the site never gets automatic links, whatever its post type.', 'mt-smart-link-automation' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'Excluded pages', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th><?php esc_html_e( 'Excluded pages', 'mt-smart-link-automation' ); ?></th>
 							<td>
 								<?php
 								$picked = array();
@@ -727,97 +727,97 @@ class MTAL_Admin {
 								}
 								self::picker( 'mtal_exclude', 'all', $picked, 'list' );
 								?>
-								<p class="description"><?php esc_html_e( 'These never get automatic links. Search by title or ID among the post types and taxonomies ticked below (posts, pages, products, categories, tags and others) and pick from the list. Save the settings after ticking a new post type or taxonomy to search in it.', 'autolink-by-mohsentavoosi' ); ?></p>
+								<p class="description"><?php esc_html_e( 'These never get automatic links. Search by title or ID among the post types and taxonomies ticked below (posts, pages, products, categories, tags and others) and pick from the list. Save the settings after ticking a new post type or taxonomy to search in it.', 'mt-smart-link-automation' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'Post types', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th><?php esc_html_e( 'Post types', 'mt-smart-link-automation' ); ?></th>
 							<td>
 								<?php foreach ( MTAL_Settings::public_post_types() as $slug => $label ) : ?>
 									<label style="display:inline-block;margin:0 16px 6px 0;"><input type="checkbox" name="mtal_post_types[]" value="<?php echo esc_attr( $slug ); ?>" <?php checked( in_array( $slug, $saved_types, true ) ); ?>> <?php echo esc_html( $label ); ?> <code><?php echo esc_html( $slug ); ?></code></label>
 								<?php endforeach; ?>
-								<p class="description"><?php esc_html_e( 'Links are added to the content of these post types. For WooCommerce products this covers the full and the short description, and both share one counter.', 'autolink-by-mohsentavoosi' ); ?></p>
+								<p class="description"><?php esc_html_e( 'Links are added to the content of these post types. For WooCommerce products this covers the full and the short description, and both share one counter.', 'mt-smart-link-automation' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'Taxonomies', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th><?php esc_html_e( 'Taxonomies', 'mt-smart-link-automation' ); ?></th>
 							<td>
 								<?php foreach ( MTAL_Settings::public_taxonomies() as $slug => $label ) : ?>
 									<label style="display:inline-block;margin:0 16px 6px 0;"><input type="checkbox" name="mtal_taxonomies[]" value="<?php echo esc_attr( $slug ); ?>" <?php checked( in_array( $slug, $saved_taxes, true ) ); ?>> <?php echo esc_html( $label ); ?> <code><?php echo esc_html( $slug ); ?></code></label>
 								<?php endforeach; ?>
-								<p class="description"><?php esc_html_e( 'Links are added to the description of terms in these taxonomies (category, subcategory, tag, product category, product tag and custom ones).', 'autolink-by-mohsentavoosi' ); ?></p>
+								<p class="description"><?php esc_html_e( 'Links are added to the description of terms in these taxonomies (category, subcategory, tag, product category, product tag and custom ones).', 'mt-smart-link-automation' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th><?php esc_html_e( 'On uninstall', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th><?php esc_html_e( 'On uninstall', 'mt-smart-link-automation' ); ?></th>
 							<td>
-								<label><input type="checkbox" name="mtal_delete_on_uninstall" value="1" <?php checked( MTAL_Settings::delete_on_uninstall() ); ?>> <?php esc_html_e( 'Delete all plugin data when the plugin is deleted', 'autolink-by-mohsentavoosi' ); ?></label>
-								<p class="description"><strong><?php esc_html_e( 'Warning:', 'autolink-by-mohsentavoosi' ); ?></strong> <?php esc_html_e( 'This removes every record and setting for good. Export a backup first. Off by default.', 'autolink-by-mohsentavoosi' ); ?></p>
+								<label><input type="checkbox" name="mtal_delete_on_uninstall" value="1" <?php checked( MTAL_Settings::delete_on_uninstall() ); ?>> <?php esc_html_e( 'Delete all plugin data when the plugin is deleted', 'mt-smart-link-automation' ); ?></label>
+								<p class="description"><strong><?php esc_html_e( 'Warning:', 'mt-smart-link-automation' ); ?></strong> <?php esc_html_e( 'This removes every record and setting for good. Export a backup first. Off by default.', 'mt-smart-link-automation' ); ?></p>
 							</td>
 						</tr>
 					</table>
-					<?php submit_button( __( 'Save Settings', 'autolink-by-mohsentavoosi' ) ); ?>
+					<?php submit_button( __( 'Save Settings', 'mt-smart-link-automation' ) ); ?>
 				</form>
 			</div>
 
 			<div class="ail-card">
-				<h2><?php esc_html_e( 'Keywords & Links', 'autolink-by-mohsentavoosi' ); ?></h2>
+				<h2><?php esc_html_e( 'Keywords & Links', 'mt-smart-link-automation' ); ?></h2>
 
 				<?php if ( ! $show_form ) : ?>
-					<a href="<?php echo esc_url( self::page_url( array( 'add' => '1' ) ) ); ?>" class="button button-primary" style="margin-bottom:16px">+ <?php esc_html_e( 'Add New Record', 'autolink-by-mohsentavoosi' ); ?></a>
+					<a href="<?php echo esc_url( self::page_url( array( 'add' => '1' ) ) ); ?>" class="button button-primary" style="margin-bottom:16px">+ <?php esc_html_e( 'Add New Record', 'mt-smart-link-automation' ); ?></a>
 				<?php endif; ?>
 
 				<?php if ( $show_form ) : ?>
 				<div class="ail-form-box" style="margin:16px 0;">
-					<h3><?php echo $edit_rec ? esc_html__( 'Edit Record', 'autolink-by-mohsentavoosi' ) : esc_html__( 'Add New Record', 'autolink-by-mohsentavoosi' ); ?></h3>
+					<h3><?php echo $edit_rec ? esc_html__( 'Edit Record', 'mt-smart-link-automation' ) : esc_html__( 'Add New Record', 'mt-smart-link-automation' ); ?></h3>
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<input type="hidden" name="action" value="mtal_save_keyword">
 						<input type="hidden" name="kw_id" value="<?php echo esc_attr( $edit_rec ? $edit_rec->id : 0 ); ?>">
 						<?php wp_nonce_field( 'mtal_keyword_save' ); ?>
 						<table class="form-table">
 							<tr>
-								<th><label for="kw_keywords"><?php esc_html_e( 'Keywords', 'autolink-by-mohsentavoosi' ); ?></label></th>
+								<th><label for="kw_keywords"><?php esc_html_e( 'Keywords', 'mt-smart-link-automation' ); ?></label></th>
 								<td>
-									<textarea name="kw_keywords" id="kw_keywords" rows="5" class="regular-text" placeholder="<?php echo esc_attr( sprintf( /* translators: %d: maximum keywords */ __( 'One keyword per line (max %d)', 'autolink-by-mohsentavoosi' ), self::MAX_KEYWORDS ) ); ?>" required><?php echo esc_textarea( $edit_text ); ?></textarea>
-									<p class="description"><?php echo esc_html( sprintf( /* translators: %d: maximum keywords */ __( 'One keyword per line. Maximum %d keywords per record. All of them link to the same URL.', 'autolink-by-mohsentavoosi' ), self::MAX_KEYWORDS ) ); ?></p>
+									<textarea name="kw_keywords" id="kw_keywords" rows="5" class="regular-text" placeholder="<?php echo esc_attr( sprintf( /* translators: %d: maximum keywords */ __( 'One keyword per line (max %d)', 'mt-smart-link-automation' ), self::MAX_KEYWORDS ) ); ?>" required><?php echo esc_textarea( $edit_text ); ?></textarea>
+									<p class="description"><?php echo esc_html( sprintf( /* translators: %d: maximum keywords */ __( 'One keyword per line. Maximum %d keywords per record. All of them link to the same URL.', 'mt-smart-link-automation' ), self::MAX_KEYWORDS ) ); ?></p>
 								</td>
 							</tr>
 							<tr>
-								<th><label for="kw_url"><?php esc_html_e( 'Link URL', 'autolink-by-mohsentavoosi' ); ?></label></th>
+								<th><label for="kw_url"><?php esc_html_e( 'Link URL', 'mt-smart-link-automation' ); ?></label></th>
 								<td><input type="text" name="kw_url" id="kw_url" class="regular-text" value="<?php echo esc_attr( $edit_rec ? $edit_rec->target_url : '' ); ?>" placeholder="/my-page or https://example.com/page/" required></td>
 							</tr>
 							<tr>
-								<th><label for="kw_max"><?php esc_html_e( 'Max links per page', 'autolink-by-mohsentavoosi' ); ?></label></th>
+								<th><label for="kw_max"><?php esc_html_e( 'Max links per page', 'mt-smart-link-automation' ); ?></label></th>
 								<td>
 									<input type="number" name="kw_max" id="kw_max" min="1" max="100" style="width:70px" value="<?php echo esc_attr( $edit_rec ? $edit_rec->max_links : 1 ); ?>">
-									<p class="description"><?php esc_html_e( 'How many times this keyword set can be linked on a single page.', 'autolink-by-mohsentavoosi' ); ?></p>
+									<p class="description"><?php esc_html_e( 'How many times this keyword set can be linked on a single page.', 'mt-smart-link-automation' ); ?></p>
 								</td>
 							</tr>
 							<tr>
-								<th><label for="kw_para_max"><?php esc_html_e( 'Max links per paragraph', 'autolink-by-mohsentavoosi' ); ?></label></th>
+								<th><label for="kw_para_max"><?php esc_html_e( 'Max links per paragraph', 'mt-smart-link-automation' ); ?></label></th>
 								<td>
 									<input type="number" name="kw_para_max" id="kw_para_max" min="0" max="100" style="width:70px" value="<?php echo esc_attr( $edit_pmax ); ?>">
-									<p class="description"><strong>0</strong> = <?php esc_html_e( 'no paragraph limit.', 'autolink-by-mohsentavoosi' ); ?></p>
+									<p class="description"><strong>0</strong> = <?php esc_html_e( 'no paragraph limit.', 'mt-smart-link-automation' ); ?></p>
 								</td>
 							</tr>
 							<tr>
-								<th><?php esc_html_e( 'Paragraph detection mode', 'autolink-by-mohsentavoosi' ); ?></th>
+								<th><?php esc_html_e( 'Paragraph detection mode', 'mt-smart-link-automation' ); ?></th>
 								<td>
 									<fieldset>
 										<label style="display:block;margin-bottom:8px;">
 											<input type="radio" name="kw_para_mode" value="p_br" <?php checked( $edit_mode, 'p_br' ); ?>>
-											<strong><?php esc_html_e( 'Take <p> and <br> tags as paragraph', 'autolink-by-mohsentavoosi' ); ?></strong>
+											<strong><?php esc_html_e( 'Take <p> and <br> tags as paragraph', 'mt-smart-link-automation' ); ?></strong>
 										</label>
 										<label style="display:block;">
 											<input type="radio" name="kw_para_mode" value="heading" <?php checked( $edit_mode, 'heading' ); ?>>
-											<strong><?php esc_html_e( 'Take texts between headings as paragraph', 'autolink-by-mohsentavoosi' ); ?></strong>
-											<br><span class="description" style="margin-left:24px;"><?php esc_html_e( 'All content between two headings (h1 to h6) is one paragraph. The text before the first heading and after the last heading are each one paragraph.', 'autolink-by-mohsentavoosi' ); ?></span>
+											<strong><?php esc_html_e( 'Take texts between headings as paragraph', 'mt-smart-link-automation' ); ?></strong>
+											<br><span class="description" style="margin-left:24px;"><?php esc_html_e( 'All content between two headings (h1 to h6) is one paragraph. The text before the first heading and after the last heading are each one paragraph.', 'mt-smart-link-automation' ); ?></span>
 										</label>
 									</fieldset>
 								</td>
 							</tr>
 							<tr>
-								<th><?php esc_html_e( 'Only on these pages', 'autolink-by-mohsentavoosi' ); ?></th>
+								<th><?php esc_html_e( 'Only on these pages', 'mt-smart-link-automation' ); ?></th>
 								<td>
 									<?php
 									$rec_picked = array();
@@ -826,12 +826,12 @@ class MTAL_Admin {
 									}
 									self::picker( 'kw_post_ids', 'posts', $rec_picked, 'csv' );
 									?>
-									<p class="description"><?php esc_html_e( 'Search by title or ID and pick. Empty = every page. Use it to test a record on one page first. A record limited to some pages is not used in term descriptions.', 'autolink-by-mohsentavoosi' ); ?></p>
+									<p class="description"><?php esc_html_e( 'Search by title or ID and pick. Empty = every page. Use it to test a record on one page first. A record limited to some pages is not used in term descriptions.', 'mt-smart-link-automation' ); ?></p>
 								</td>
 							</tr>
 						</table>
-						<?php submit_button( $edit_rec ? __( 'Save Changes', 'autolink-by-mohsentavoosi' ) : __( 'Add Record', 'autolink-by-mohsentavoosi' ), 'primary', 'submit', false ); ?>
-						<a href="<?php echo esc_url( self::page_url() ); ?>" class="button" style="margin-left:8px"><?php esc_html_e( 'Cancel', 'autolink-by-mohsentavoosi' ); ?></a>
+						<?php submit_button( $edit_rec ? __( 'Save Changes', 'mt-smart-link-automation' ) : __( 'Add Record', 'mt-smart-link-automation' ), 'primary', 'submit', false ); ?>
+						<a href="<?php echo esc_url( self::page_url() ); ?>" class="button" style="margin-left:8px"><?php esc_html_e( 'Cancel', 'mt-smart-link-automation' ); ?></a>
 					</form>
 				</div>
 				<?php endif; ?>
@@ -840,18 +840,18 @@ class MTAL_Admin {
 					<thead>
 						<tr>
 							<th style="width:6%">#</th>
-							<th style="width:25%"><?php esc_html_e( 'Keywords', 'autolink-by-mohsentavoosi' ); ?></th>
-							<th style="width:22%"><?php esc_html_e( 'Link URL', 'autolink-by-mohsentavoosi' ); ?></th>
-							<th style="width:7%"><?php esc_html_e( 'Max/Page', 'autolink-by-mohsentavoosi' ); ?></th>
-							<th style="width:8%"><?php esc_html_e( 'Max/Para', 'autolink-by-mohsentavoosi' ); ?></th>
-							<th style="width:8%"><?php esc_html_e( 'Para Mode', 'autolink-by-mohsentavoosi' ); ?></th>
-							<th style="width:10%"><?php esc_html_e( 'Post IDs', 'autolink-by-mohsentavoosi' ); ?></th>
-							<th style="width:14%"><?php esc_html_e( 'Actions', 'autolink-by-mohsentavoosi' ); ?></th>
+							<th style="width:25%"><?php esc_html_e( 'Keywords', 'mt-smart-link-automation' ); ?></th>
+							<th style="width:22%"><?php esc_html_e( 'Link URL', 'mt-smart-link-automation' ); ?></th>
+							<th style="width:7%"><?php esc_html_e( 'Max/Page', 'mt-smart-link-automation' ); ?></th>
+							<th style="width:8%"><?php esc_html_e( 'Max/Para', 'mt-smart-link-automation' ); ?></th>
+							<th style="width:8%"><?php esc_html_e( 'Para Mode', 'mt-smart-link-automation' ); ?></th>
+							<th style="width:10%"><?php esc_html_e( 'Post IDs', 'mt-smart-link-automation' ); ?></th>
+							<th style="width:14%"><?php esc_html_e( 'Actions', 'mt-smart-link-automation' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php if ( empty( $records ) ) : ?>
-						<tr><td colspan="8" style="text-align:center;padding:20px;color:#999;"><?php esc_html_e( 'No records defined yet.', 'autolink-by-mohsentavoosi' ); ?></td></tr>
+						<tr><td colspan="8" style="text-align:center;padding:20px;color:#999;"><?php esc_html_e( 'No records defined yet.', 'mt-smart-link-automation' ); ?></td></tr>
 					<?php else : ?>
 						<?php foreach ( $records as $rec ) : ?>
 						<tr>
@@ -864,15 +864,15 @@ class MTAL_Admin {
 							<td style="color:#2271b1;word-break:break-all;font-size:12px"><?php echo esc_html( $rec->target_url ); ?></td>
 							<td><?php echo (int) $rec->max_links; ?></td>
 							<td><?php echo (int) $rec->para_max; ?></td>
-							<td style="font-size:11px"><?php echo 'heading' === $rec->para_mode ? esc_html__( 'Heading', 'autolink-by-mohsentavoosi' ) : 'P/BR'; ?></td>
-							<td style="color:#555;font-size:12px"><?php echo '' !== (string) $rec->post_ids ? esc_html( $rec->post_ids ) : '<span style="color:#999">' . esc_html__( 'All', 'autolink-by-mohsentavoosi' ) . '</span>'; ?></td>
+							<td style="font-size:11px"><?php echo 'heading' === $rec->para_mode ? esc_html__( 'Heading', 'mt-smart-link-automation' ) : 'P/BR'; ?></td>
+							<td style="color:#555;font-size:12px"><?php echo '' !== (string) $rec->post_ids ? esc_html( $rec->post_ids ) : '<span style="color:#999">' . esc_html__( 'All', 'mt-smart-link-automation' ) . '</span>'; ?></td>
 							<td>
-								<a href="<?php echo esc_url( self::page_url( array( 'edit_id' => $rec->id ) ) ); ?>" class="button button-small"><?php esc_html_e( 'Edit', 'autolink-by-mohsentavoosi' ); ?></a>
-								<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline" class="ail-delete-form" data-confirm="<?php echo esc_attr__( 'Delete this record?', 'autolink-by-mohsentavoosi' ); ?>">
+								<a href="<?php echo esc_url( self::page_url( array( 'edit_id' => $rec->id ) ) ); ?>" class="button button-small"><?php esc_html_e( 'Edit', 'mt-smart-link-automation' ); ?></a>
+								<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline" class="ail-delete-form" data-confirm="<?php echo esc_attr__( 'Delete this record?', 'mt-smart-link-automation' ); ?>">
 									<input type="hidden" name="action" value="mtal_delete_keyword">
 									<input type="hidden" name="kw_id" value="<?php echo (int) $rec->id; ?>">
 									<?php wp_nonce_field( 'mtal_delete_keyword' ); ?>
-									<button type="submit" class="button button-small" style="color:#b32d2e"><?php esc_html_e( 'Delete', 'autolink-by-mohsentavoosi' ); ?></button>
+									<button type="submit" class="button button-small" style="color:#b32d2e"><?php esc_html_e( 'Delete', 'mt-smart-link-automation' ); ?></button>
 								</form>
 							</td>
 						</tr>
@@ -883,58 +883,58 @@ class MTAL_Admin {
 			</div>
 
 			<div class="ail-card">
-				<h2><?php esc_html_e( 'Import / Export', 'autolink-by-mohsentavoosi' ); ?></h2>
+				<h2><?php esc_html_e( 'Import / Export', 'mt-smart-link-automation' ); ?></h2>
 				<div style="display:flex;gap:40px;flex-wrap:wrap;">
 					<div style="flex:1;min-width:280px;">
-						<h3 style="margin-top:0;"><?php esc_html_e( 'Export', 'autolink-by-mohsentavoosi' ); ?></h3>
-						<p class="description" style="margin-bottom:12px;"><?php esc_html_e( 'Download all records and settings as a JSON file. Use it as a backup before updating, or to move to another site.', 'autolink-by-mohsentavoosi' ); ?></p>
+						<h3 style="margin-top:0;"><?php esc_html_e( 'Export', 'mt-smart-link-automation' ); ?></h3>
+						<p class="description" style="margin-bottom:12px;"><?php esc_html_e( 'Download all records and settings as a JSON file. Use it as a backup before updating, or to move to another site.', 'mt-smart-link-automation' ); ?></p>
 						<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 							<input type="hidden" name="action" value="mtal_export">
 							<?php wp_nonce_field( 'mtal_export' ); ?>
-							<button type="submit" class="button button-primary">⬇ <?php esc_html_e( 'Export All Records (JSON)', 'autolink-by-mohsentavoosi' ); ?></button>
+							<button type="submit" class="button button-primary">⬇ <?php esc_html_e( 'Export All Records (JSON)', 'mt-smart-link-automation' ); ?></button>
 							<?php if ( ! empty( $records ) ) : ?>
-								<span style="margin-left:10px;color:#666;font-size:12px;"><?php echo esc_html( sprintf( /* translators: %d: number of records */ _n( '%d record', '%d records', count( $records ), 'autolink-by-mohsentavoosi' ), count( $records ) ) ); ?></span>
+								<span style="margin-left:10px;color:#666;font-size:12px;"><?php echo esc_html( sprintf( /* translators: %d: number of records */ _n( '%d record', '%d records', count( $records ), 'mt-smart-link-automation' ), count( $records ) ) ); ?></span>
 							<?php endif; ?>
 						</form>
 					</div>
 					<div style="flex:1;min-width:280px;">
-						<h3 style="margin-top:0;"><?php esc_html_e( 'Import', 'autolink-by-mohsentavoosi' ); ?></h3>
-						<p class="description" style="margin-bottom:12px;"><?php esc_html_e( 'Upload a JSON file exported by this plugin (up to 1 MB). Duplicate URLs and keywords are skipped and counted.', 'autolink-by-mohsentavoosi' ); ?></p>
+						<h3 style="margin-top:0;"><?php esc_html_e( 'Import', 'mt-smart-link-automation' ); ?></h3>
+						<p class="description" style="margin-bottom:12px;"><?php esc_html_e( 'Upload a JSON file exported by this plugin (up to 1 MB). Duplicate URLs and keywords are skipped and counted.', 'mt-smart-link-automation' ); ?></p>
 						<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" id="ail-import-form">
 							<input type="hidden" name="action" value="mtal_import">
 							<?php wp_nonce_field( 'mtal_import' ); ?>
 							<div style="margin-bottom:12px;">
-								<label style="display:block;margin-bottom:6px;"><input type="radio" name="mtal_import_mode" value="merge" checked> <strong><?php esc_html_e( 'Merge', 'autolink-by-mohsentavoosi' ); ?></strong> — <?php esc_html_e( 'add the imported records to the existing ones (skip duplicates)', 'autolink-by-mohsentavoosi' ); ?></label>
-								<label style="display:block;"><input type="radio" name="mtal_import_mode" value="replace"> <strong><?php esc_html_e( 'Replace', 'autolink-by-mohsentavoosi' ); ?></strong> — <?php esc_html_e( 'delete all existing records first, then import', 'autolink-by-mohsentavoosi' ); ?></label>
+								<label style="display:block;margin-bottom:6px;"><input type="radio" name="mtal_import_mode" value="merge" checked> <strong><?php esc_html_e( 'Merge', 'mt-smart-link-automation' ); ?></strong> — <?php esc_html_e( 'add the imported records to the existing ones (skip duplicates)', 'mt-smart-link-automation' ); ?></label>
+								<label style="display:block;"><input type="radio" name="mtal_import_mode" value="replace"> <strong><?php esc_html_e( 'Replace', 'mt-smart-link-automation' ); ?></strong> — <?php esc_html_e( 'delete all existing records first, then import', 'mt-smart-link-automation' ); ?></label>
 							</div>
 							<input type="file" name="mtal_import_file" accept=".json,application/json" style="margin-bottom:10px;" required>
 							<br>
-							<button type="submit" class="button" data-confirm="<?php echo esc_attr__( 'This will DELETE all existing records and replace them with the imported data. Continue?', 'autolink-by-mohsentavoosi' ); ?>">⬆ <?php esc_html_e( 'Import Records', 'autolink-by-mohsentavoosi' ); ?></button>
+							<button type="submit" class="button" data-confirm="<?php echo esc_attr__( 'This will DELETE all existing records and replace them with the imported data. Continue?', 'mt-smart-link-automation' ); ?>">⬆ <?php esc_html_e( 'Import Records', 'mt-smart-link-automation' ); ?></button>
 						</form>
 					</div>
 				</div>
 			</div>
 
 			<div class="ail-card">
-				<h2><?php esc_html_e( 'How it works', 'autolink-by-mohsentavoosi' ); ?></h2>
+				<h2><?php esc_html_e( 'How it works', 'mt-smart-link-automation' ); ?></h2>
 				<ul style="list-style:disc;padding-left:20px;line-height:2">
-					<li><?php esc_html_e( 'Keywords match whole words only, and upper or lower case does not matter.', 'autolink-by-mohsentavoosi' ); ?></li>
-					<li><?php esc_html_e( 'With the half-space switch on, a space and a half-space between the words of a keyword are the same.', 'autolink-by-mohsentavoosi' ); ?></li>
-					<li><?php esc_html_e( 'Longer keywords win over shorter ones, across all records.', 'autolink-by-mohsentavoosi' ); ?></li>
-					<li><?php esc_html_e( 'An existing link whose text is exactly one of your keywords but points to another URL is corrected when the page is shown.', 'autolink-by-mohsentavoosi' ); ?></li>
-					<li><?php esc_html_e( 'Links whose text is longer than the keyword, or unrelated to your keywords, are left alone.', 'autolink-by-mohsentavoosi' ); ?></li>
-					<li><?php esc_html_e( 'A page never links to itself.', 'autolink-by-mohsentavoosi' ); ?></li>
-					<li><?php esc_html_e( 'Each URL and each keyword can be used in one record only.', 'autolink-by-mohsentavoosi' ); ?></li>
-					<li><?php esc_html_e( 'Links are added while the page is shown. Your posts and the database content are never changed.', 'autolink-by-mohsentavoosi' ); ?></li>
-					<li><?php esc_html_e( 'If you use a page cache or a CDN, clear it after changing records.', 'autolink-by-mohsentavoosi' ); ?></li>
+					<li><?php esc_html_e( 'Keywords match whole words only, and upper or lower case does not matter.', 'mt-smart-link-automation' ); ?></li>
+					<li><?php esc_html_e( 'With the half-space switch on, a space and a half-space between the words of a keyword are the same.', 'mt-smart-link-automation' ); ?></li>
+					<li><?php esc_html_e( 'Longer keywords win over shorter ones, across all records.', 'mt-smart-link-automation' ); ?></li>
+					<li><?php esc_html_e( 'An existing link whose text is exactly one of your keywords but points to another URL is corrected when the page is shown.', 'mt-smart-link-automation' ); ?></li>
+					<li><?php esc_html_e( 'Links whose text is longer than the keyword, or unrelated to your keywords, are left alone.', 'mt-smart-link-automation' ); ?></li>
+					<li><?php esc_html_e( 'A page never links to itself.', 'mt-smart-link-automation' ); ?></li>
+					<li><?php esc_html_e( 'Each URL and each keyword can be used in one record only.', 'mt-smart-link-automation' ); ?></li>
+					<li><?php esc_html_e( 'Links are added while the page is shown. Your posts and the database content are never changed.', 'mt-smart-link-automation' ); ?></li>
+					<li><?php esc_html_e( 'If you use a page cache or a CDN, clear it after changing records.', 'mt-smart-link-automation' ); ?></li>
 				</ul>
 			</div>
 
 			<p class="ail-credit">
-				<?php esc_html_e( 'Made by', 'autolink-by-mohsentavoosi' ); ?>
+				<?php esc_html_e( 'Made by', 'mt-smart-link-automation' ); ?>
 				<a href="<?php echo esc_url( MTAL_AUTHOR_URL ); ?>" target="_blank" rel="noopener">Mohsen Tavoosi</a>
-				&middot; <a href="<?php echo esc_url( MTAL_DOCS_WP_URL ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'WordPress guide', 'autolink-by-mohsentavoosi' ); ?></a>
-				&middot; <a href="<?php echo esc_url( MTAL_DOCS_GENERAL_URL ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'General rules of automatic internal linking', 'autolink-by-mohsentavoosi' ); ?></a>
+				&middot; <a href="<?php echo esc_url( MTAL_DOCS_WP_URL ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'WordPress guide', 'mt-smart-link-automation' ); ?></a>
+				&middot; <a href="<?php echo esc_url( MTAL_DOCS_GENERAL_URL ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'General rules of automatic internal linking', 'mt-smart-link-automation' ); ?></a>
 			</p>
 		</div>
 		<?php

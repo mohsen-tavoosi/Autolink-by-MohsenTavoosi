@@ -1,4 +1,4 @@
-/* Autolink by MohsenTavoosi - Admin JS */
+/* MT Smart Link Automation - Admin JS */
 (function () {
 	'use strict';
 

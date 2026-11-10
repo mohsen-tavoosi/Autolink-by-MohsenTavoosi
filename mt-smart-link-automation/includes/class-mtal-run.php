@@ -14,7 +14,7 @@
  *
  * The DOM API uses camelCase property names (childNodes, parentNode, ...), which is why the naming sniff is off here.
  *
- * @package Autolink_By_MohsenTavoosi
+ * @package MT_Smart_Link_Automation
  */
 
 // phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase

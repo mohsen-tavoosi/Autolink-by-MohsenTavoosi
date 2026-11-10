@@ -2,7 +2,7 @@
 /**
  * Plugin settings (options with the mtal_ prefix).
  *
- * @package Autolink_By_MohsenTavoosi
+ * @package MT_Smart_Link_Automation
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

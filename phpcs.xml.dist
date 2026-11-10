@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
-<ruleset name="Autolink by MohsenTavoosi">
+<ruleset name="MT Smart Link Automation">
 	<description>WordPress Coding Standards for the plugin.</description>
-	<file>autolink-by-mohsentavoosi</file>
+	<file>mt-smart-link-automation</file>
 	<arg name="extensions" value="php"/>
 	<rule ref="WordPress-Extra">
 		<exclude name="WordPress.Files.FileName"/>
 	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array"><element value="autolink-by-mohsentavoosi"/></property>
+			<property name="text_domain" type="array"><element value="mt-smart-link-automation"/></property>
 		</properties>
 	</rule>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">

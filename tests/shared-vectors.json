@@ -1,5 +1,5 @@
 {
- "about": "Autolink by MohsenTavoosi engine vectors, plugin version 2.1.0. Owner of the rules: Mohsen Tavoosi. Every port (Python reference, JS, PHP, edge) must pass every case. 2.0 shared vectors plus vectors derived from DOCUMENTATION 2.1.0. The plugin's own 26 plugin-specific engine tests are NOT in this file yet; merge them when the plugin repository is at hand. Known byte difference: WordPress esc_url writes & as &#038;, so a PHP runner must compare href values after decoding entities.",
+ "about": "MT Smart Link Automation engine vectors, plugin version 2.1.0. Owner of the rules: Mohsen Tavoosi. Every port (Python reference, JS, PHP, edge) must pass every case. 2.0 shared vectors plus vectors derived from DOCUMENTATION 2.1.0. The plugin's own 26 plugin-specific engine tests are NOT in this file yet; merge them when the plugin repository is at hand. Known byte difference: WordPress esc_url writes & as &#038;, so a PHP runner must compare href values after decoding entities.",
  "ctx_defaults": {
   "current_url": "https://site.test/post/",
   "post_id": 10,

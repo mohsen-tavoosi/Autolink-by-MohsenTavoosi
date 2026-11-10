@@ -1,4 +1,4 @@
-# Autolink by MohsenTavoosi
+# MT Smart Link Automation
 
 WordPress plugin that adds internal links to your keywords **while the page is shown**. It never changes your posts or the database content. Turn it off and every link is gone.
 
@@ -23,7 +23,7 @@ By [Mohsen Tavoosi](https://mohsentavoosi.com).
 
 ## Install
 
-Copy the `autolink-by-mohsentavoosi` folder into `wp-content/plugins/` (or upload the release ZIP) and activate it. Requires WordPress 5.8+ and PHP 7.4+.
+Copy the `mt-smart-link-automation` folder into `wp-content/plugins/` (or upload the release ZIP) and activate it. Requires WordPress 5.8+ and PHP 7.4+.
 
 ## Development
 

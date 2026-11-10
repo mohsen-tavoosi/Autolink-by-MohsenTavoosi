@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );
 }
 function esc_url_raw( $u, $p = null ) { return $u; }
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-processor.php';
+require __DIR__ . '/../mt-smart-link-automation/includes/class-mtal-processor.php';
 
 $files = array( __DIR__ . '/shared-vectors.json', __DIR__ . '/plugin-vectors.json', __DIR__ . '/feature-vectors.json' );
 $total = 0; $fail = 0;

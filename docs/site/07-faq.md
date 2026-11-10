@@ -3,7 +3,7 @@ slug: wordpress-auto-internal-links/faq
 parent: wordpress-auto-internal-links
 seo_title: سوالات متداول افزونه لینک سازی داخلی خودکار وردپرس - Mohsen Tavoosi
 h1: سوالات متداول افزونه لینک سازی داخلی خودکار
-meta_description: جواب کوتاه به سوال های رایج درباره Autolink by MohsenTavoosi، از تغییر نکردن محتوا تا سرعت سایت و حذف افزونه.
+meta_description: جواب کوتاه به سوال های رایج درباره MT Smart Link Automation، از تغییر نکردن محتوا تا سرعت سایت و حذف افزونه.
 status: پیش نویس. قبل از انتشار با دانش به روز محسن آپدیت شود.
 ---
 

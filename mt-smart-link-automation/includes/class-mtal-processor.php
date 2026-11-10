@@ -1,12 +1,12 @@
 <?php
 /**
- * Autolink by MohsenTavoosi engine.
+ * MT Smart Link Automation engine.
  *
  * Pure engine: it never reads options or the database. Everything arrives as
  * parameters, so the shared test vectors can run it outside WordPress.
  * It never writes anything: it only turns an HTML string into another HTML string (R01).
  *
- * @package Autolink_By_MohsenTavoosi
+ * @package MT_Smart_Link_Automation
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

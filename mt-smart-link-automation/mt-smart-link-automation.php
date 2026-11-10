@@ -1,26 +1,26 @@
 <?php
 /**
- * Plugin Name:       Autolink by MohsenTavoosi
+ * Plugin Name:       MT Smart Link Automation
  * Plugin URI:        https://mohsentavoosi.com/wordpress-auto-internal-links
- * Description:       Adds internal links to your keywords while the page is shown. Never changes your posts or the database content. Works with Elementor, the block editor, WooCommerce and term descriptions.
- * Version:           2.2.1
+ * Description:       Mohsen Tavoosi's automatic internal links. Adds links to your keywords while the page is shown. Never changes your posts or the database content. Works with Elementor, the block editor, WooCommerce and term descriptions.
+ * Version:           2.2.2
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Mohsen Tavoosi
  * Author URI:        https://mohsentavoosi.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       autolink-by-mohsentavoosi
+ * Text Domain:       mt-smart-link-automation
  * Domain Path:       /languages
  *
- * @package Autolink_By_MohsenTavoosi
+ * @package MT_Smart_Link_Automation
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MTAL_VERSION', '2.2.1' );
+define( 'MTAL_VERSION', '2.2.2' );
 define( 'MTAL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/automate-internal-links' ); // General rules of automatic internal linking (any platform).
 define( 'MTAL_DOCS_WP_URL', 'https://mohsentavoosi.com/wordpress-auto-internal-links' ); // WordPress guide of this plugin.
 define( 'MTAL_AUTHOR_URL', 'https://mohsentavoosi.com' );
@@ -39,7 +39,7 @@ if ( is_admin() ) {
 }
 
 /**
- * Versions before 2.2.0 were published as "Auto Internal Links" with the prefix "ail_".
+ * Versions before 2.2.0 were called "Auto Internal Links" and used the prefix "ail_".
  * Move the old table and options to the new prefix once. Nothing is lost: the table is
  * renamed (not copied), and an old option is removed only after its value was copied.
  */

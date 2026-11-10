@@ -1,18 +1,18 @@
-=== Autolink by MohsenTavoosi ===
+=== MT Smart Link Automation ===
 Contributors: mohsentavoosiseo
 Tags: internal links, seo, automatic links, keywords, elementor
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Adds internal links to your keywords while the page is shown. Your posts and the database content are never changed.
+Mohsen Tavoosi's automatic internal links. Adds links to your keywords while the page is shown. Your posts are never changed.
 
 == Description ==
 
-Autolink by MohsenTavoosi is made by [Mohsen Tavoosi](https://mohsentavoosi.com), an SEO practitioner since 2012. The rules inside it (longest keyword first, limits per page and paragraph, keyword order) come from his teaching on automatic internal linking.
+[Mohsen Tavoosi](https://mohsentavoosi.com), an SEO practitioner since 2012, built MT Smart Link Automation from his teaching on automatic internal linking. The rules inside it (longest keyword first, limits per page and paragraph, keyword order) are the ones he teaches.
 
 * [General rules of automatic internal linking](https://mohsentavoosi.com/automate-internal-links) - the principles for any site and platform.
 * [WordPress guide](https://mohsentavoosi.com/wordpress-auto-internal-links) - how to set up and use this plugin.
@@ -24,7 +24,7 @@ You list the keywords and the page each group should link to. The plugin adds th
 * Several keywords per link (up to 20), all pointing to one URL.
 * Whole-word matching, not case sensitive. A longer keyword wins over a shorter one and keeps its place, even when it reached its limit.
 * Smart link diversity (on by default): each record links its keywords in their saved order, so links spread over all your keywords.
-* The whole page is processed at once, so limits and keyword order count every widget and block of the page together.
+* On WordPress 6.9 and later the whole page is processed at once, so limits and keyword order count every widget and block of the page together. Older versions process each part of the page on its own.
 * Exclude any post, page, product or term by searching its title. Front page on or off.
 * Limit per page and per paragraph for each record. Paragraphs can be detected by `<p>` and `<br>` or by the text between headings.
 * Existing links are respected. A link with the exact keyword text and the right URL is kept. One with the wrong URL is corrected on screen. Longer link texts and unrelated links are left alone.
@@ -65,17 +65,22 @@ Your records are kept unless you ticked "Delete all plugin data when the plugin 
 
 == Changelog ==
 
+= 2.2.2 =
+* Rename: the plugin is now MT Smart Link Automation (slug `mt-smart-link-automation`). Records, settings and files exported under earlier names keep working.
+* Fix: the plugin no longer opens an output buffer. The whole page is processed with the WordPress 6.9 filter `wp_template_enhancement_output_buffer`. Older WordPress versions process each part of the page on its own.
+* Change: WooCommerce category descriptions are processed with the WooCommerce filter `woocommerce_taxonomy_archive_description_raw` (WooCommerce 6.7 and later).
+
 = 2.2.1 =
 * Fix: Save, Delete, Import, Export and the title search in the settings screen used internal names from before the rename. They now work.
 * Dev: database queries on the plugin's own table are marked for Plugin Check. No change in behavior.
 
 = 2.2.0 =
-* Rename: the plugin is now Autolink by MohsenTavoosi. Your records and settings move to the new internal names automatically on the first load. Export a backup before updating.
+* Change: internal names changed from `ail_` to `mtal_`. Your records and settings move automatically on the first load. Export a backup before updating.
 * New: a longer keyword always keeps its place, even after it reached its limit. A shorter keyword is never linked inside it.
 * New: "Smart link diversity order by keywords per link" (on by default). Link 1 goes to keyword 1, the next to the first keyword not linked yet on the page, up to keyword 20, then it starts again.
 * New: option to unlock longer phrases after their page limit (off by default).
 * New: option to link a shorter phrase once inside a longer one when it has no link yet on the page (off by default).
-* New: the whole page is processed in one pass (one output buffer). Only content is changed, never menus, header or footer.
+* New: the whole page is processed in one pass. Only content is changed, never menus, header or footer.
 * New: front page switch, and an exclusion list with title search for posts, pages, products and terms.
 * New: "Only on these pages" in a record is picked by title search instead of typing IDs.
 * Change: the old "longer keyword first inside one record" order is replaced by smart link diversity. Turn it off to link in text order.
@@ -97,6 +102,9 @@ Your records are kept unless you ticked "Delete all plugin data when the plugin 
 * Multiple keywords per record, paragraph limits, Import and Export.
 
 == Upgrade Notice ==
+
+= 2.2.2 =
+New name and slug, and no output buffer opened by the plugin. Records and settings are kept. Clear your page cache after the update.
 
 = 2.2.1 =
 Fixes Save, Delete, Import, Export and search in the settings screen. Update recommended.

@@ -3,7 +3,7 @@ slug: wordpress-auto-internal-links/privacy
 parent: wordpress-auto-internal-links
 seo_title: حریم خصوصی افزونه لینک سازی داخلی خودکار وردپرس - Mohsen Tavoosi
 h1: حریم خصوصی و داده ها در افزونه لینک سازی داخلی خودکار
-meta_description: افزونه Autolink by MohsenTavoosi هیچ داده ای جمع نمی کنه، کوکی نمی ذاره و با سایت دیگه ای ارتباط نمی گیره.
+meta_description: افزونه MT Smart Link Automation هیچ داده ای جمع نمی کنه، کوکی نمی ذاره و با سایت دیگه ای ارتباط نمی گیره.
 status: پیش نویس. قبل از انتشار با دانش به روز محسن آپدیت شود.
 ---
 

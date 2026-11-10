@@ -13,7 +13,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, mbstring
       - name: Lint
-        run: find autolink-by-mohsentavoosi -name '*.php' -print0 | xargs -0 -n1 php -l
+        run: find mt-smart-link-automation -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Engine tests
         run: php tests/run-vectors.php && php tests/hooks-unit.php && php tests/admin-smoke.php && php tests/migration-unit.php && php tests/action-names.php
   standards:

@@ -28,7 +28,7 @@ class Fake_Db {
 		return true;
 	}
 }
-require __DIR__ . '/../autolink-by-mohsentavoosi/autolink-by-mohsentavoosi.php';
+require __DIR__ . '/../mt-smart-link-automation/mt-smart-link-automation.php';
 $ok = 0; $bad = 0;
 function check( $name, $cond ) { global $ok, $bad; echo ( $cond ? 'PASS ' : 'FAIL ' ) . $name . "\n"; $cond ? ++$ok : ++$bad; }
 

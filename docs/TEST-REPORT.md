@@ -1,4 +1,4 @@
-# گزارش تست نسخه 2.2.0 (۲۴ اکتبر ۲۰۲۶)
+# گزارش تست نسخه 2.2.0 (۲۴ اکتبر ۲۰۲۶) و پیوست‌های بعدی
 
 ## اجرا شده و پاس شده
 - **بردارهای موتور، ۷۸ از ۷۸.** ۴۰ بردار مشترک، ۲۶ بردار مخصوص افزونه و ۱۲ بردار تازه‌ی 2.2.0 (قفل عبارت بلند، تنوع لینک، دو تیک تازه، پردازش کل صفحه). دستور اجرا `php tests/run-vectors.php`.
@@ -39,3 +39,11 @@
 - Official Plugin Check on the 2.2.1 zip: 0 errors, 0 warnings. The same check on 2.2.0 gave 62 database warnings, all on the plugin's own table; they are now marked with a reason in the code. A control run on the 2.2.0 files still showed the 62, so the check is sensitive. The owner also ran the WordPress.org version of the check: no errors.
 - Real WordPress 7.1 with SQLite: all 6 admin hooks registered, a record saved through admin-post with its nonce, front-end output linked without leftover markers.
 - Still not run: real MySQL, Elementor, WooCommerce, page-cache plugins (see LIVE-TEST-CHECKLIST.md).
+
+## 10 Nov 2026, version 2.2.2 (rename to MT Smart Link Automation, no plugin-owned output buffer)
+- All five automated suites pass: 78/78 engine vectors, 22/22 whole-page and buffer tests (10 new: no `ob_start()` anywhere, core filter registered, WooCommerce category description processed directly), 7/7 migration, admin smoke 9 PASS, 25/25 action-name consistency. `php -l` clean.
+- phpcs WordPress-Extra: 0 findings.
+- Official Plugin Check on the 2.2.2 folder (WordPress 7.1.4 with SQLite): 0 errors, 0 warnings in runtime and `--context=admin`.
+- `tests/cli_wordpress.php` on real WordPress: 15/15. Two old faults in the script itself were fixed (a variable named `$wp` overwrote the WordPress global; the schema version was hard coded as 2).
+- Real front end over HTTP (WordPress 7.1.4): the page buffer is started by WordPress core (`wp_template_enhancement_output_buffer_started` fired, output buffer level 2 with the plugin adding none), one keyword link in the post body, 0 leftover markers, front page and feed return 200.
+- Not run: real MySQL, Elementor, WooCommerce (the category-description filter is covered by a unit test only), page-cache plugins, WordPress older than 6.9 (the plugin then links each fragment directly, as in 2.1; covered by unit tests only).

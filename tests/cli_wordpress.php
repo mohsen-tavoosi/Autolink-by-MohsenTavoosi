@@ -1,8 +1,8 @@
 <?php
 // Usage: php tests/cli_wordpress.php /path/to/wordpress   (throw-away site with the plugin active)
-$wp = isset( $argv[1] ) ? $argv[1] : '';
+$mtal_wp_path = isset( $argv[1] ) ? $argv[1] : '';
 $_SERVER['HTTP_HOST'] = '127.0.0.1:8088'; $_SERVER['REQUEST_URI'] = '/';
-require rtrim( $wp, '/' ) . '/wp-load.php';
+require rtrim( $mtal_wp_path, '/' ) . '/wp-load.php';
 $res = array();
 function ok( $name, $cond, $detail = '' ) { global $res; $res[] = (bool) $cond; echo ( $cond ? 'PASS ' : 'FAIL ' ) . $name . ( $cond ? '' : '   -> ' . substr( print_r( $detail, true ), 0, 300 ) ) . "\n"; }
 global $wpdb;
@@ -23,7 +23,7 @@ $rows = $wpdb->get_results( "SELECT * FROM {$t} ORDER BY id", ARRAY_A );
 ok( 'R22 old column removed and new columns added', ! in_array( 'keyword', $cols, true ) && in_array( 'keywords', $cols, true ) && in_array( 'para_mode', $cols, true ) && in_array( 'post_ids', $cols, true ), $cols );
 ok( 'R22 keywords converted to JSON, Persian kept readable', 2 === count( $rows ) && '["dscr loan"]' === $rows[0]['keywords'] && false !== strpos( $rows[1]['keywords'], 'لیزینگ' ), $rows );
 ok( 'R22 duplicate URL removed (lowest id kept), old global para_max copied', '/a' === $rows[0]['target_url'] && 2 === (int) $rows[0]['para_max'] && 'p_br' === $rows[0]['para_mode'], $rows );
-ok( 'R22 old option removed and schema version saved', false === get_option( 'mtal_para_max', false ) && 2 === (int) get_option( 'mtal_schema_version' ) );
+ok( 'R22 old option removed and schema version saved', false === get_option( 'mtal_para_max', false ) && MTAL_SCHEMA_VERSION === (int) get_option( 'mtal_schema_version' ) );
 $before = $wpdb->get_var( "SELECT COUNT(*) FROM {$t}" );
 delete_option( 'mtal_schema_version' ); mtal_boot();
 ok( 'R22 running the upgrade twice changes nothing', $before === $wpdb->get_var( "SELECT COUNT(*) FROM {$t}" ) );
@@ -71,14 +71,14 @@ wp_delete_post( $pid, true );
 
 // 4. Uninstall (R: data is kept unless the box was ticked).
 $wpdb->query( "DELETE FROM {$t}" );
-define( 'WP_UNINSTALL_PLUGIN', 'autolink-by-mohsentavoosi/autolink-by-mohsentavoosi.php' );
+define( 'WP_UNINSTALL_PLUGIN', 'mt-smart-link-automation/mt-smart-link-automation.php' );
 update_option( 'mtal_delete_on_uninstall', 0 );
 include MTAL_PLUGIN_DIR . 'uninstall.php';
 ok( 'uninstall keeps the table when the box is not ticked', (bool) $wpdb->get_var( "SHOW TABLES LIKE '{$t}'" ) );
 update_option( 'mtal_delete_on_uninstall', 1 );
 include MTAL_PLUGIN_DIR . 'uninstall.php';
 ok( 'uninstall removes table and options when the box is ticked', ! $wpdb->get_var( "SHOW TABLES LIKE '{$t}'" ) && false === get_option( 'mtal_zwnj_as_space', false ) );
-mtal_create_table(); add_option( 'mtal_zwnj_as_space', 1 ); update_option( 'mtal_schema_version', 2 ); update_option( 'mtal_enabled', 1 );
+mtal_create_table(); add_option( 'mtal_zwnj_as_space', 1 ); update_option( 'mtal_schema_version', MTAL_SCHEMA_VERSION ); update_option( 'mtal_enabled', 1 );
 
 $fail = count( array_filter( $res, function ( $x ) { return ! $x; } ) );
 echo ( count( $res ) - $fail ) . '/' . count( $res ) . " passed\n";

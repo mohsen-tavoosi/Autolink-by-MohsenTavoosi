@@ -3,7 +3,7 @@ slug: wordpress-auto-internal-links/compatibility
 parent: wordpress-auto-internal-links
 seo_title: سازگاری افزونه لینک سازی داخلی با المنتور، ووکامرس و کش - Mohsen Tavoosi
 h1: سازگاری با المنتور، ووکامرس، صفحه سازها و کش
-meta_description: افزونه Autolink by MohsenTavoosi با المنتور، گوتنبرگ، WPBakery، Toolset، ووکامرس، افزونه های کش و CDN چطوری کار می کنه.
+meta_description: افزونه MT Smart Link Automation با المنتور، گوتنبرگ، WPBakery، Toolset، ووکامرس، افزونه های کش و CDN چطوری کار می کنه.
 status: پیش نویس. قبل از انتشار با دانش به روز محسن آپدیت شود. تست زنده روی المنتور، ووکامرس و کش هنوز انجام نشده.
 ---
 

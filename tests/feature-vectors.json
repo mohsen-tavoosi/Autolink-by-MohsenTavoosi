@@ -1,5 +1,5 @@
 {
- "about": "Autolink by MohsenTavoosi 2.2.0 feature vectors: long-phrase lock, smart link diversity, unlock_capped, short_inside, whole-page processing.",
+ "about": "MT Smart Link Automation 2.2.0 feature vectors: long-phrase lock, smart link diversity, unlock_capped, short_inside, whole-page processing.",
  "cases": [
   {
    "id": "LOCK-01",

@@ -19,12 +19,18 @@ function wp_list_pluck( $l, $f ) { return array_map( function ( $x ) use ( $f ) 
 function absint( $v ) { return abs( (int) $v ); }
 function sanitize_key( $k ) { return strtolower( preg_replace( '/[^a-z0-9_\-]/i', '', $k ) ); }
 function esc_url_raw( $u, $p = null ) { return $u; }
-function add_filter() {} function add_action() {}
+$GLOBALS['hooks'] = array();
+function add_filter( $tag, $cb = null ) { $GLOBALS['hooks'][] = $tag; return true; }
+function add_action( $tag, $cb = null ) { $GLOBALS['hooks'][] = $tag; return true; }
+function apply_filters( $tag, $value ) { return $value; }
+function is_admin() { return false; } function wp_doing_ajax() { return false; }
+function is_feed() { return false; } function is_robots() { return false; } function is_trackback() { return false; }
+function wp_start_template_enhancement_output_buffer() { return false; } // Stand-in: WordPress 6.9 and later has this function.
 class wpdb_stub { public $prefix = 'wp_'; public $rows = array(); function get_results() { return $this->rows; } }
 $GLOBALS['wpdb'] = new wpdb_stub();
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-processor.php';
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-settings.php';
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-hooks.php';
+require __DIR__ . '/../mt-smart-link-automation/includes/class-mtal-processor.php';
+require __DIR__ . '/../mt-smart-link-automation/includes/class-mtal-settings.php';
+require __DIR__ . '/../mt-smart-link-automation/includes/class-mtal-hooks.php';
 
 $pass = 0; $fail = 0;
 function ok( $name, $cond, $info = '' ) { global $pass, $fail; if ( $cond ) { $pass++; echo "PASS $name\n"; } else { $fail++; echo "FAIL $name\n   $info\n"; } }
@@ -94,6 +100,38 @@ records( array( array_merge( $rec, array( 'target_url' => 'https://site.test/p14
 $w = MTAL_Hooks::process( '<p>alpha</p>', 'post', 14, 14, 'https://site.test/p14/' );
 $out = MTAL_Hooks::finish_buffer( $w );
 ok( 'page never links to itself', '<p>alpha</p>' === $out, $out );
+
+// 10. No output buffer opened by the plugin (WordPress.org review, 5 Nov 2026): the core filter is used instead.
+$level = ob_get_level(); $GLOBALS['hooks'] = array();
+MTAL_Hooks::start_buffer();
+ok( 'start_buffer registers the WordPress 6.9 filter and the started action', in_array( 'wp_template_enhancement_output_buffer', $GLOBALS['hooks'], true ) && in_array( 'wp_template_enhancement_output_buffer_started', $GLOBALS['hooks'], true ), implode( ',', $GLOBALS['hooks'] ) );
+ok( 'start_buffer opens no output buffer', ob_get_level() === $level );
+$files = array_merge( glob( __DIR__ . '/../mt-smart-link-automation/*.php' ), glob( __DIR__ . '/../mt-smart-link-automation/includes/*.php' ) );
+$bad = array();
+foreach ( $files as $f ) { if ( preg_match( '/\bob_start\s*\(/', file_get_contents( $f ) ) ) { $bad[] = basename( $f ); } }
+ok( 'no ob_start() anywhere in the plugin', array() === $bad, implode( ',', $bad ) );
+
+// 11. Fragments are marked only after WordPress started its buffer.
+records( array( $rec ) ); set_buffering( false );
+$w = MTAL_Hooks::process( '<p>alpha</p>', 'post', 21, 21, 'https://site.test/p21/' );
+ok( 'before the buffer started: processed at once', '<p><a href="' . $U . '">alpha</a></p>' === $w, $w );
+records( array( $rec ) ); MTAL_Hooks::buffer_started();
+$w = MTAL_Hooks::process( '<p>alpha</p>', 'post', 22, 22, 'https://site.test/p22/' );
+ok( 'after the buffer started: marked, not linked yet', false !== strpos( $w, '<!--ail-s:post:22:' ) && false === strpos( $w, '<a ' ), $w );
+$out = MTAL_Hooks::finish_buffer( '<html>' . $w . '</html>' );
+ok( 'the finish filter links the marked fragment and returns to direct mode', '<html><p><a href="' . $U . '">alpha</a></p></html>' === $out, $out );
+$w = MTAL_Hooks::process( '<p>alpha</p>', 'post', 23, 23, 'https://site.test/p23/' );
+ok( 'after the page is finished: direct mode again', false === strpos( $w, '<!--ail-s:' ), $w );
+
+// 12. WooCommerce category description: filter, processed at once even while the page buffer is open.
+records( array( $rec ) ); set_buffering( true );
+$term = new WP_Term(); $term->term_id = 31; $term->taxonomy = 'category';
+$w = MTAL_Hooks::filter_wc_archive_description( 'beta alpha text', $term );
+ok( 'WooCommerce category description: linked at once, no marker', 'beta <a href="' . $U . '">alpha</a> text' === $w, $w );
+$other = new WP_Term(); $other->term_id = 32; $other->taxonomy = 'not_allowed';
+ok( 'WooCommerce category description: taxonomy not allowed is untouched', 'alpha' === MTAL_Hooks::filter_wc_archive_description( 'alpha', $other ) );
+ok( 'WooCommerce category description: no term is untouched', 'alpha' === MTAL_Hooks::filter_wc_archive_description( 'alpha', null ) );
+set_buffering( false );
 
 echo "$pass/" . ( $pass + $fail ) . " passed\n";
 exit( $fail ? 1 : 0 );

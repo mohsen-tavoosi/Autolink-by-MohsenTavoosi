@@ -1,7 +1,7 @@
 <?php
 // Usage: php tests/admin-smoke.php
 // Renders the settings screen and runs the search endpoint with small WordPress stand-ins, to catch PHP errors.
-define( 'ABSPATH', __DIR__ . '/' ); define( 'ARRAY_A', 'ARRAY_A' ); define( 'MTAL_VERSION', '2.2.1' ); define( 'MTAL_PLUGIN_URL', '/' ); define( 'MTAL_PLUGIN_FILE', __FILE__ );
+define( 'ABSPATH', __DIR__ . '/' ); define( 'ARRAY_A', 'ARRAY_A' ); define( 'MTAL_VERSION', '2.2.2' ); define( 'MTAL_PLUGIN_URL', '/' ); define( 'MTAL_PLUGIN_FILE', __FILE__ );
 define( 'MTAL_DOCS_GENERAL_URL', 'https://mohsentavoosi.com/automate-internal-links' ); define( 'MTAL_DOCS_WP_URL', 'https://mohsentavoosi.com/wordpress-auto-internal-links' ); define( 'MTAL_AUTHOR_URL', 'https://mohsentavoosi.com' );
 define( 'MTAL_DIVERSITY_INFO_URL', MTAL_DOCS_GENERAL_URL );
 error_reporting( E_ALL ); set_error_handler( function ( $n, $s, $f, $l ) { echo "PHPERR [$n] $s at $l\n"; return true; } );
@@ -23,9 +23,9 @@ function get_post( $id ) { return new WP_Post( $id, 'About us' ); } function get
 function get_posts( $a ) { return array( new WP_Post( 21, 'About us' ), new WP_Post( 22, 'About team' ) ); } function get_terms( $a ) { return array( new WP_Term() ); }
 function check_ajax_referer() { return true; } function wp_send_json_success( $d ) { echo json_encode( $d, JSON_UNESCAPED_UNICODE ), "\n"; throw new Exception( 'sent' ); } function wp_send_json_error() { throw new Exception( 'err' ); }
 class wpdb_stub { public $prefix = 'wp_'; function get_results() { return array(); } } $GLOBALS['wpdb'] = new wpdb_stub();
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-processor.php';
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-settings.php';
-require __DIR__ . '/../autolink-by-mohsentavoosi/includes/class-mtal-admin.php';
+require __DIR__ . '/../mt-smart-link-automation/includes/class-mtal-processor.php';
+require __DIR__ . '/../mt-smart-link-automation/includes/class-mtal-settings.php';
+require __DIR__ . '/../mt-smart-link-automation/includes/class-mtal-admin.php';
 ob_start(); MTAL_Admin::render_page(); $h = ob_get_clean();
 $checks = array(
 	'diversity tick on by default' => preg_match( '/name="mtal_diversity" value="1"\s+checked/', $h ),

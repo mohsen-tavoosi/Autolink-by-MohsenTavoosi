@@ -4,7 +4,7 @@
  *
  * Every callback starts with the global switch (R17).
  *
- * @package Autolink_By_MohsenTavoosi
+ * @package MT_Smart_Link_Automation
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,8 +20,6 @@ class MTAL_Hooks {
 	private static $seen = array();
 
 	private static $prepared = null;
-
-	private static $wc_buffer_level = null;
 
 	/** True while the whole-page buffer is open: fragments are marked now and processed together at the end. */
 	private static $buffering = false;
@@ -39,8 +37,7 @@ class MTAL_Hooks {
 		add_filter( 'the_content', array( __CLASS__, 'filter_content' ), 99 );
 		add_filter( 'term_description', array( __CLASS__, 'filter_term_description' ), 99, 4 );
 		add_filter( 'woocommerce_short_description', array( __CLASS__, 'filter_wc_short_description' ), 99 );
-		add_action( 'woocommerce_archive_description', array( __CLASS__, 'wc_archive_start' ), 5 );
-		add_action( 'woocommerce_archive_description', array( __CLASS__, 'wc_archive_end' ), 99 );
+		add_filter( 'woocommerce_taxonomy_archive_description_raw', array( __CLASS__, 'filter_wc_archive_description' ), 99, 2 );
 		add_filter( 'wpv_filter_wpv_view_shortcode_output', array( __CLASS__, 'filter_toolset_view' ), 99 );
 		add_action( 'wp', array( __CLASS__, 'reset' ) );
 		add_action( 'template_redirect', array( __CLASS__, 'start_buffer' ), 1 );
@@ -49,12 +46,19 @@ class MTAL_Hooks {
 	// ── Whole page ───────────────────────────────────────────────────────────
 
 	/**
-	 * Open one output buffer for the front-end page. Content fragments (post content, widgets,
-	 * descriptions) are only marked while the page is built. When the page is complete, all
-	 * fragments of the same post or term are processed together, so limits and keyword order
-	 * see the whole page. Menus, header and footer are never touched because they are not marked.
+	 * Ask WordPress for the whole page. Content fragments (post content, widgets, descriptions)
+	 * are only marked while the page is built. When the page is complete, all fragments of the same
+	 * post or term are processed together, so limits and keyword order see the whole page. Menus,
+	 * header and footer are never touched because they are not marked.
+	 *
+	 * This plugin never opens an output buffer itself. It uses the template enhancement output buffer
+	 * of WordPress 6.9 and later (the filter wp_template_enhancement_output_buffer). On older versions
+	 * every fragment is processed on its own, like version 2.1.
 	 */
 	public static function start_buffer() {
+		if ( ! function_exists( 'wp_start_template_enhancement_output_buffer' ) ) {
+			return; // WordPress before 6.9.
+		}
 		if ( ! MTAL_Settings::enabled() || self::skip_request() || is_feed() || is_robots() || is_trackback() || wp_doing_ajax() ) {
 			return;
 		}
@@ -64,12 +68,18 @@ class MTAL_Hooks {
 		if ( ! apply_filters( 'mtal_whole_page', true ) ) {
 			return; // Escape hatch: process each fragment on its own, like version 2.1.
 		}
+		// Added before WordPress decides to start its buffer (wp_before_include_template, priority 1000).
+		add_filter( 'wp_template_enhancement_output_buffer', array( __CLASS__, 'finish_buffer' ) );
+		add_action( 'wp_template_enhancement_output_buffer_started', array( __CLASS__, 'buffer_started' ) );
+	}
+
+	/** WordPress opened its buffer: from now on fragments are marked and processed together at the end. */
+	public static function buffer_started() {
 		self::$buffering = true;
-		ob_start( array( __CLASS__, 'finish_buffer' ) );
 	}
 
 	/**
-	 * Output buffer callback: process all marked fragments, then remove the markers.
+	 * Output filter: process all marked fragments, then remove the markers.
 	 *
 	 * @param string $html Full page.
 	 */
@@ -239,37 +249,26 @@ class MTAL_Hooks {
 	}
 
 	/**
-	 * WooCommerce prints the product category description with its own function that
-	 * does not run the term filters, so the output of that action is captured instead.
+	 * WooCommerce prints the product category description with its own function that does not run
+	 * the term filters. It passes the raw text through this WooCommerce filter first (WooCommerce 6.7
+	 * and later), so the text is processed here and no output buffer is needed. WooCommerce formats
+	 * and sanitizes the text after this filter.
+	 *
+	 * @param string $text Raw description.
+	 * @param mixed  $term Term object of the archive.
 	 */
-	public static function wc_archive_start() {
-		self::$wc_buffer_level = null;
-		if ( ! MTAL_Settings::enabled() || self::skip_request() || ! function_exists( 'is_tax' ) || ! is_tax() ) {
-			return;
+	public static function filter_wc_archive_description( $text, $term = null ) {
+		if ( ! MTAL_Settings::enabled() ) {
+			return $text;
 		}
-		$term = get_queried_object();
+		if ( ! is_string( $text ) || '' === $text || self::skip_request() ) {
+			return $text;
+		}
 		if ( ! ( $term instanceof WP_Term ) || ! MTAL_Settings::taxonomy_allowed( $term->taxonomy ) ) {
-			return;
+			return $text;
 		}
-		ob_start();
-		self::$wc_buffer_level = ob_get_level();
-	}
-
-	public static function wc_archive_end() {
-		if ( null === self::$wc_buffer_level ) {
-			return;
-		}
-		$level                 = self::$wc_buffer_level;
-		self::$wc_buffer_level = null;
-		if ( ob_get_level() !== $level ) {
-			return; // Something else changed the buffers. Leave them alone.
-		}
-		$html = (string) ob_get_clean();
-		$term = get_queried_object();
-		if ( $term instanceof WP_Term && MTAL_Settings::enabled() ) {
-			$html = self::process( $html, 'term', (int) $term->term_id, 0, self::term_url( (int) $term->term_id, $term->taxonomy ) );
-		}
-		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Same markup the theme already printed.
+		// Direct: WooCommerce runs wpautop after this filter, which would split markers from their text.
+		return self::process( $text, 'term', (int) $term->term_id, 0, self::term_url( (int) $term->term_id, $term->taxonomy ), true );
 	}
 
 	// ── Shared pieces (also used by the Elementor integration) ──────────────
@@ -282,8 +281,9 @@ class MTAL_Hooks {
 	 * @param int    $id      Post or term ID, the key of the shared counter state.
 	 * @param int    $post_id Post ID for the "only on these posts" rule, 0 for terms.
 	 * @param string $url     Permalink of the page being rendered, to avoid self links.
+	 * @param bool   $direct  True to process now even while the whole-page buffer is open (no markers).
 	 */
-	public static function process( $html, $type, $id, $post_id, $url ) {
+	public static function process( $html, $type, $id, $post_id, $url, $direct = false ) {
 		if ( 'post' === $type && MTAL_Settings::post_excluded( $id ) ) {
 			return $html;
 		}
@@ -307,7 +307,7 @@ class MTAL_Hooks {
 			'home'        => home_url(),
 			'opts'        => MTAL_Settings::run_opts(),
 		);
-		if ( self::$buffering ) {
+		if ( self::$buffering && ! $direct ) {
 			if ( ! isset( self::$contexts[ $key ] ) ) {
 				self::$contexts[ $key ] = $ctx;
 			}
