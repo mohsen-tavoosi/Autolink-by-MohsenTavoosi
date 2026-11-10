@@ -14,6 +14,10 @@
  * Domain Path:       /languages
  *
  * @package MT_Smart_Link_Automation
+ *
+ * Copyright (C) 2026 Mohsen Tavoosi (https://mohsentavoosi.com). MT Smart Link Automation is free software,
+ * licensed under the GNU General Public License version 2 or later. Copies and forks must keep this
+ * copyright notice and the license.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
